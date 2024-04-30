@@ -1,0 +1,74 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="C00475AE-482D-FDB5-FE6C-F2ED5365D162" name="category">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:06:36 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_9</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="categoryID" id="245E30E5-FEFE-389A-D2A0-287B7B9FF30C">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:07:05 UTC</createdTime>
+<commentInRDBMS><![CDATA[카테고리번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="categoryname" id="7DCC0172-ADA4-335A-1073-F5E973E39F77">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:07:58 UTC</createdTime>
+<commentInRDBMS><![CDATA[카테고리이름]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="goodsDB_goodsid" id="319B639B-0D44-4309-83F0-D34C25DF0D11">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:15:15 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="22DB77F3-7582-B20E-E5F6-BBA91F29EC14" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="66103C0F-C0C6-B514-066A-8E5A1C8BC4C9" name="categori_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:07:05 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="245E30E5-FEFE-389A-D2A0-287B7B9FF30C"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="B42F4CAA-7506-8046-5FD4-B7E57583634E" name="category_goodsDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:15:15 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="319B639B-0D44-4309-83F0-D34C25DF0D11"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

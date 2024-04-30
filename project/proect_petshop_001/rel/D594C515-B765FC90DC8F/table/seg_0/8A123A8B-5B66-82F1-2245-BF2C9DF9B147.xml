@@ -1,0 +1,98 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8A123A8B-5B66-82F1-2245-BF2C9DF9B147" name="orders">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:32:37 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_3</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="orderid" id="69A54817-83D4-0C9D-D571-E0A294FD2900">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:00 UTC</createdTime>
+<commentInRDBMS><![CDATA[주문번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="orderdate" id="E4B078B4-EA5E-16BF-8100-891DA5B4CFED">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:00 UTC</createdTime>
+<commentInRDBMS><![CDATA[주문날짜]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="userDB_userid" id="2FE18867-6C80-B801-D345-3E7F2DD78133">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:07 UTC</createdTime>
+<commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8FAC49FC-27D4-8EF5-B566-840DBC237C08" referredColumn="EE288F90-61BE-8847-12D4-F178B52A01AE"/>
+</associations>
+</Column>
+<Column name="goodsDB_goodsid" id="CE107944-BD5A-BFC0-E86E-755ADFFB312D">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:14 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="F0BF61CF-C1BC-DEA7-655C-EE9BF04FF4C8" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="AE7AD207-824F-F2E8-0207-01E758508A5E" name="orders_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:00 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="69A54817-83D4-0C9D-D571-E0A294FD2900"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="637757D5-EAE1-D23D-F091-8CB8D73201E1" name="orders_userDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:07 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2FE18867-6C80-B801-D345-3E7F2DD78133"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="51317D00-B7B5-BD0F-D4B1-C6336EC2C031" name="orders_goodsDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:14 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CE107944-BD5A-BFC0-E86E-755ADFFB312D"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

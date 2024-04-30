@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="22DB77F3-7582-B20E-E5F6-BBA91F29EC14" containerWithKeyObject="C00475AE-482D-FDB5-FE6C-F2ED5365D162" localFKIndex="B42F4CAA-7506-8046-5FD4-B7E57583634E" name="category_goodsDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 06:15:15 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<referredTableLongName>goodsDB</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>355545F8-E723-918A-A842-56D54CBD871F</referredTableID>
+<keyObject>9D380160-EB1F-BAF9-2DDF-4627F1D2F484</keyObject>
+<referredKeyID>9D380160-EB1F-BAF9-2DDF-4627F1D2F484</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>goodsid</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

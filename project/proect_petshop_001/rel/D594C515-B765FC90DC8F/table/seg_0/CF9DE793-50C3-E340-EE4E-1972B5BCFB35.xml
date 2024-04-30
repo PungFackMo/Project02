@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="CF9DE793-50C3-E340-EE4E-1972B5BCFB35" name="basket">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:35:56 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_6</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="goodscnt" id="5503E20D-018B-F5DD-02E0-FDA040C1B59D">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:28 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품갯수]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="userDB_userid" id="2E2DC995-4E61-0DF3-FE3C-AA1A3F3A5B6A">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:34 UTC</createdTime>
+<commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="11F5E464-B428-FA0C-DE72-A9B37AE21BAA" referredColumn="EE288F90-61BE-8847-12D4-F178B52A01AE"/>
+</associations>
+</Column>
+<Column name="goodsDB_goodsid" id="AACFCF51-163C-56B1-8436-08E937BDE636">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:44 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="14A9BD80-2BFB-DC7C-4828-D69ED38F06DB" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="6EBBF745-8C41-FC02-5202-AA2F2E06B7D2" name="basket_userDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:34 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2E2DC995-4E61-0DF3-FE3C-AA1A3F3A5B6A"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="3CDB1224-9DA4-5C45-2B87-CA29E5A6FA0A" name="basket_goodsDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:44 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="AACFCF51-163C-56B1-8436-08E937BDE636"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

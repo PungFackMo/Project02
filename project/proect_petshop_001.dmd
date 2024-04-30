@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="proect_petshop_001" id="BE718CB4-4503-EE7B-9473-C4D521F0B1FA" version="3.5">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:29:31 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>BE718CB4-4503-EE7B-9473-C4D521F0B1FA</designId>
+</OSDM_Design>

@@ -1,0 +1,76 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="A2B32B62-B4F4-C874-DD1C-CB220E81D8C6" name="profile">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:28 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_4</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="userDB_userid" id="2E8BDC71-021E-DC7B-11AF-4874C397C6ED">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:34:36 UTC</createdTime>
+<commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="7DA6E472-7AD5-05BE-23FC-4C1A1F6458E2" referredColumn="EE288F90-61BE-8847-12D4-F178B52A01AE"/>
+</associations>
+</Column>
+<Column name="email" id="7295B1F2-2B83-CF39-2DB1-44B100C1A445">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:34:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[이메일]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="address" id="AF3EA402-C867-77EE-51EC-86EDC8C523F7">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:34:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[주소]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>400</dataTypeSize>
+<ownDataTypeParameters>400,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="phone" id="4A1048F8-E091-60AD-2C9D-F96D886AE05C">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:34:30 UTC</createdTime>
+<commentInRDBMS><![CDATA[휴대폰번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7A96090A-00EF-6279-70F8-AE3523D2FE19" name="profile_userDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:34:36 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2E8BDC71-021E-DC7B-11AF-4874C397C6ED"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

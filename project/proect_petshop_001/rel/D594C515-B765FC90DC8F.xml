@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<relationalModel class="oracle.dbtools.crest.model.design.relational.RelationalDesign" name="펫샵 물리적 모델링" id="D594C515-0A3A-7FB8-390B-B765FC90DC8F" mainViewID="759C2FE1-4D90-1632-F4E8-CEAFB81358BA">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:29:45 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+<selectedRDBMSSite>32076570-2523-435C-2E92-BF29817DFF70</selectedRDBMSSite>
+</relationalModel>

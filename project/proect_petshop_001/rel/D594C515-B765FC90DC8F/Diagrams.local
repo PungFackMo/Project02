@@ -1,0 +1,4 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<oracle.dbtools.crest.model.design.relational.RelationalDesign>
+   <object objectType="main_view" objectID="759C2FE1-4D90-1632-F4E8-CEAFB81358BA" name="펫샵 물리적 모델링" visible="true"/>
+</oracle.dbtools.crest.model.design.relational.RelationalDesign>

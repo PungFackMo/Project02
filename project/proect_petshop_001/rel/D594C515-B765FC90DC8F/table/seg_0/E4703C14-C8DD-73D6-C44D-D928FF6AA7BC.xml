@@ -1,0 +1,50 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="E4703C14-C8DD-73D6-C44D-D928FF6AA7BC" name="goodsDB_price">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:45:16 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<splittedTableID>355545F8-E723-918A-A842-56D54CBD871F</splittedTableID>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="goodsname" id="61AB20FC-A08A-F2DB-D4C4-26DF5A9D2647">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:45:16 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품명]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>1000</dataTypeSize>
+<ownDataTypeParameters>1000,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="price" id="282F3E09-190D-455E-3C1F-54BDEE3E97BE">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:32:16 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품가격]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7601E556-F1D5-B17D-F449-F1E4422FA915" name="goodsDB_price_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:45:16 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="61AB20FC-A08A-F2DB-D4C4-26DF5A9D2647"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

@@ -1,0 +1,62 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="355545F8-E723-918A-A842-56D54CBD871F" name="goodsDB">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:31:10 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_2</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="goodsid" id="1D85F616-B52F-5534-74BC-84D50D95705F">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:32:16 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="goodsDB_price_goodsname" id="2507C8EC-47CA-8D88-E21F-2FDBE2634070">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:46:40 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품명]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>2000</dataTypeSize>
+<ownDataTypeParameters>2000,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="8FF8D966-BA24-6C7F-691D-90410FE4232C" referredColumn="61AB20FC-A08A-F2DB-D4C4-26DF5A9D2647"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9D380160-EB1F-BAF9-2DDF-4627F1D2F484" name="goodsDB_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:32:16 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="1D85F616-B52F-5534-74BC-84D50D95705F"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="1413443B-0077-A8D6-41DF-825F7DA9FB54" name="goodsDB_goodsDB_price_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:46:40 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="2507C8EC-47CA-8D88-E21F-2FDBE2634070"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
