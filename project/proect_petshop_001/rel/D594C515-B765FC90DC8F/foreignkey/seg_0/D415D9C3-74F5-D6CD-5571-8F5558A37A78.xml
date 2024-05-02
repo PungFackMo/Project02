@@ -1,0 +1,16 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="D415D9C3-74F5-D6CD-5571-8F5558A37A78" containerWithKeyObject="4A2CA9E3-59C3-3C13-6420-266291355FEA" localFKIndex="9CB8D603-8AA9-C6EA-C6CD-1F8CF3D38E13" name="review_comment_review_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:50 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<referredTableLongName>review</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>8AE68040-4A7C-45FE-8B0C-64717BD53367</referredTableID>
+<keyObject>86E403E9-E3F1-F922-358D-AB02264CD09B</keyObject>
+<referredKeyID>86E403E9-E3F1-F922-358D-AB02264CD09B</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>review_id</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

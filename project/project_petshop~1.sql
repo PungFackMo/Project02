@@ -1,18 +1,22 @@
+drop table review_comment;
+drop table review;
+drop table inquiry_page;
 drop table basket;
 drop table orders;
-drop table category;
-drop table goodsdb;
-drop table goodsdb_price;
-drop table profile;
 drop table userdb;
+drop table goodsdb;
+drop table category;
+
+
 CREATE TABLE basket (
-    goodscnt        NUMBER,
-    userdb_userid   NUMBER NOT NULL,
-    goodsdb_goodsid NUMBER NOT NULL
+    basket_id       NUMBER NOT NULL,
+    userdb_userid   NUMBER,
+    goodsdb_goodsid NUMBER NOT NULL,
+    goodscnt        NUMBER NOT NULL
 );
 
-COMMENT ON COLUMN basket.goodscnt IS
-    '상품갯수';
+COMMENT ON COLUMN basket.basket_id IS
+    '장바구니ID';
 
 COMMENT ON COLUMN basket.userdb_userid IS
     '회원번호';
@@ -20,10 +24,14 @@ COMMENT ON COLUMN basket.userdb_userid IS
 COMMENT ON COLUMN basket.goodsdb_goodsid IS
     '상품번호';
 
+COMMENT ON COLUMN basket.goodscnt IS
+    '상품갯수';
+
+ALTER TABLE basket ADD CONSTRAINT basket_pk PRIMARY KEY ( basket_id );
+
 CREATE TABLE category (
-    categoryid      NUMBER NOT NULL,
-    categoryname    VARCHAR2(200),
-    goodsdb_goodsid NUMBER NOT NULL
+    categoryid   NUMBER NOT NULL,
+    categoryname VARCHAR2(40 BYTE)
 );
 
 COMMENT ON COLUMN category.categoryid IS
@@ -32,49 +40,85 @@ COMMENT ON COLUMN category.categoryid IS
 COMMENT ON COLUMN category.categoryname IS
     '카테고리이름';
 
-COMMENT ON COLUMN category.goodsdb_goodsid IS
-    '상품번호';
-
 ALTER TABLE category ADD CONSTRAINT categori_pk PRIMARY KEY ( categoryid );
 
 CREATE TABLE goodsdb (
-    goodsid                 NUMBER NOT NULL,
-    goodsdb_price_goodsname VARCHAR2(2000) NOT NULL
+    goodsid             NUMBER NOT NULL,
+    category_categoryid NUMBER NOT NULL,
+    goods_name          VARCHAR2(200 BYTE) NOT NULL,
+    goods_price         NUMBER NOT NULL,
+    goods_info          VARCHAR2(4000 BYTE),
+    goods_stock         NUMBER NOT NULL
 );
 
 COMMENT ON COLUMN goodsdb.goodsid IS
     '상품번호';
 
-COMMENT ON COLUMN goodsdb.goodsdb_price_goodsname IS
+COMMENT ON COLUMN goodsdb.category_categoryid IS
+    '카테고리번호
+';
+
+COMMENT ON COLUMN goodsdb.goods_name IS
     '상품명';
+
+COMMENT ON COLUMN goodsdb.goods_price IS
+    '상품가격';
+
+COMMENT ON COLUMN goodsdb.goods_info IS
+    '상품 설명';
+
+COMMENT ON COLUMN goodsdb.goods_stock IS
+    '재고 수량';
 
 ALTER TABLE goodsdb ADD CONSTRAINT goodsdb_pk PRIMARY KEY ( goodsid );
 
-CREATE TABLE goodsdb_price (
-    goodsname VARCHAR2(1000) NOT NULL,
-    price     NUMBER
+CREATE TABLE inquiry_page (
+    inquiry_id      NUMBER NOT NULL,
+    userdb_userid   NUMBER NOT NULL,
+    goodsdb_goodsid NUMBER,
+    title           VARCHAR2(20 BYTE) NOT NULL,
+    contents        CLOB NOT NULL,
+    reg_date        DATE NOT NULL,
+    mod_date        DATE NOT NULL
 );
 
-COMMENT ON COLUMN goodsdb_price.goodsname IS
-    '상품명';
+COMMENT ON COLUMN inquiry_page.inquiry_id IS
+    '문의번호';
 
-COMMENT ON COLUMN goodsdb_price.price IS
-    '상품가격';
+COMMENT ON COLUMN inquiry_page.userdb_userid IS
+    '회원번호';
 
-ALTER TABLE goodsdb_price ADD CONSTRAINT goodsdb_price_pk PRIMARY KEY ( goodsname );
+COMMENT ON COLUMN inquiry_page.goodsdb_goodsid IS
+    '상품번호';
+
+COMMENT ON COLUMN inquiry_page.title IS
+    '문의제목';
+
+COMMENT ON COLUMN inquiry_page.contents IS
+    '문의내용';
+
+COMMENT ON COLUMN inquiry_page.reg_date IS
+    '작성일';
+
+COMMENT ON COLUMN inquiry_page.mod_date IS
+    '수정일';
+
+ALTER TABLE inquiry_page ADD CONSTRAINT inquiry_page_pk PRIMARY KEY ( inquiry_id );
 
 CREATE TABLE orders (
     orderid         NUMBER NOT NULL,
-    orderdate       DATE,
-    userdb_userid   NUMBER NOT NULL,
-    goodsdb_goodsid NUMBER NOT NULL
+    userdb_userid   NUMBER,
+    goodsdb_goodsid NUMBER NOT NULL,
+    orderdate       DATE NOT NULL,
+    address_num     VARCHAR2(10 BYTE) NOT NULL,
+    address         VARCHAR2(150 BYTE) NOT NULL,
+    detail_address  VARCHAR2(50 BYTE) NOT NULL,
+    phone           VARCHAR2(26 BYTE) NOT NULL,
+    total_price     NUMBER NOT NULL
 );
 
 COMMENT ON COLUMN orders.orderid IS
     '주문번호';
-
-COMMENT ON COLUMN orders.orderdate IS
-    '주문날짜';
 
 COMMENT ON COLUMN orders.userdb_userid IS
     '회원번호';
@@ -82,31 +126,100 @@ COMMENT ON COLUMN orders.userdb_userid IS
 COMMENT ON COLUMN orders.goodsdb_goodsid IS
     '상품번호';
 
-ALTER TABLE orders ADD CONSTRAINT orders_pk PRIMARY KEY ( orderid );
+COMMENT ON COLUMN orders.orderdate IS
+    '주문날짜';
 
-CREATE TABLE profile (
-    userdb_userid NUMBER NOT NULL,
-    email         VARCHAR2(200),
-    address       VARCHAR2(400) NOT NULL,
-    phone         VARCHAR2(100) NOT NULL
-);
+COMMENT ON COLUMN orders.address_num IS
+    '우편번호';
 
-COMMENT ON COLUMN profile.userdb_userid IS
-    '회원번호';
-
-COMMENT ON COLUMN profile.email IS
-    '이메일';
-
-COMMENT ON COLUMN profile.address IS
+COMMENT ON COLUMN orders.address IS
     '주소';
 
-COMMENT ON COLUMN profile.phone IS
-    '휴대폰번호';
+COMMENT ON COLUMN orders.detail_address IS
+    '상세주소';
+
+COMMENT ON COLUMN orders.phone IS
+    '전화번호';
+
+COMMENT ON COLUMN orders.total_pirce IS
+    '총 주문금액';
+
+ALTER TABLE orders ADD CONSTRAINT orders_pk PRIMARY KEY ( orderid );
+
+CREATE TABLE review (
+    review_id       NUMBER NOT NULL,
+    orders_orderid  NUMBER NOT NULL,
+    userdb_userid   NUMBER NOT NULL,
+    goodsdb_goodsid NUMBER NOT NULL,
+    title           VARCHAR2(40 BYTE),
+    contents        CLOB,
+    reg_date        DATE NOT NULL,
+    mod_date        DATE NOT NULL
+);
+
+COMMENT ON COLUMN review.review_id IS
+    '리뷰번호';
+
+COMMENT ON COLUMN review.orders_orderid IS
+    '주문번호';
+
+COMMENT ON COLUMN review.userdb_userid IS
+    '회원번호';
+
+COMMENT ON COLUMN review.goodsdb_goodsid IS
+    '상품번호';
+
+COMMENT ON COLUMN review.title IS
+    '리뷰제목';
+
+COMMENT ON COLUMN review.contents IS
+    '리뷰내용';
+
+COMMENT ON COLUMN review.reg_date IS
+    '작성일';
+
+COMMENT ON COLUMN review.mod_date IS
+    '수정일';
+
+ALTER TABLE review ADD CONSTRAINT review_pk PRIMARY KEY ( review_id );
+
+CREATE TABLE review_comment (
+    comment_id       NUMBER NOT NULL,
+    userdb_userid    NUMBER NOT NULL,
+    review_review_id NUMBER NOT NULL,
+    "comment"        CLOB,
+    reg_date         DATE NOT NULL,
+    mod_date         DATE NOT NULL
+);
+
+COMMENT ON COLUMN review_comment.comment_id IS
+    '댓글번호';
+
+COMMENT ON COLUMN review_comment.userdb_userid IS
+    '회원번호';
+
+COMMENT ON COLUMN review_comment.review_review_id IS
+    '리뷰번호';
+
+COMMENT ON COLUMN review_comment."comment" IS
+    '댓글내용';
+
+COMMENT ON COLUMN review_comment.reg_date IS
+    '작성일';
+
+COMMENT ON COLUMN review_comment.mod_date IS
+    '수정일';
+
+ALTER TABLE review_comment ADD CONSTRAINT review_comment_pk PRIMARY KEY ( comment_id );
 
 CREATE TABLE userdb (
-    userid  NUMBER NOT NULL,
-    loginid VARCHAR2(100),
-    loginpw VARCHAR2(100)
+    userid    NUMBER NOT NULL,
+    loginid   VARCHAR2(40 BYTE) NOT NULL,
+    loginpw   VARCHAR2(100 BYTE) NOT NULL,
+    name      VARCHAR2(50 BYTE) NOT NULL,
+    email     VARCHAR2(40 BYTE),
+    nick_name VARCHAR2(50 BYTE) NOT NULL,
+    phone     VARCHAR2(26 BYTE) NOT NULL
 );
 
 COMMENT ON COLUMN userdb.userid IS
@@ -118,6 +231,18 @@ COMMENT ON COLUMN userdb.loginid IS
 COMMENT ON COLUMN userdb.loginpw IS
     '로그인PW';
 
+COMMENT ON COLUMN userdb.name IS
+    '이름';
+
+COMMENT ON COLUMN userdb.email IS
+    '이메일';
+
+COMMENT ON COLUMN userdb.nick_name IS
+    '닉네임';
+
+COMMENT ON COLUMN userdb.phone IS
+    '전화번호';
+
 ALTER TABLE userdb ADD CONSTRAINT userdb_pk PRIMARY KEY ( userid );
 
 ALTER TABLE basket
@@ -128,13 +253,17 @@ ALTER TABLE basket
     ADD CONSTRAINT basket_userdb_fk FOREIGN KEY ( userdb_userid )
         REFERENCES userdb ( userid );
 
-ALTER TABLE category
-    ADD CONSTRAINT category_goodsdb_fk FOREIGN KEY ( goodsdb_goodsid )
+ALTER TABLE goodsdb
+    ADD CONSTRAINT goodsdb_category_fk FOREIGN KEY ( category_categoryid )
+        REFERENCES category ( categoryid );
+
+ALTER TABLE inquiry_page
+    ADD CONSTRAINT inquiry_page_goodsdb_fk FOREIGN KEY ( goodsdb_goodsid )
         REFERENCES goodsdb ( goodsid );
 
-ALTER TABLE goodsdb
-    ADD CONSTRAINT goodsdb_goodsdb_price_fk FOREIGN KEY ( goodsdb_price_goodsname )
-        REFERENCES goodsdb_price ( goodsname );
+ALTER TABLE inquiry_page
+    ADD CONSTRAINT inquiry_page_userdb_fk FOREIGN KEY ( userdb_userid )
+        REFERENCES userdb ( userid );
 
 ALTER TABLE orders
     ADD CONSTRAINT orders_goodsdb_fk FOREIGN KEY ( goodsdb_goodsid )
@@ -144,1152 +273,22 @@ ALTER TABLE orders
     ADD CONSTRAINT orders_userdb_fk FOREIGN KEY ( userdb_userid )
         REFERENCES userdb ( userid );
 
-ALTER TABLE profile
-    ADD CONSTRAINT profile_userdb_fk FOREIGN KEY ( userdb_userid )
+ALTER TABLE review_comment
+    ADD CONSTRAINT review_comment_review_fk FOREIGN KEY ( review_review_id )
+        REFERENCES review ( review_id );
+
+ALTER TABLE review_comment
+    ADD CONSTRAINT review_comment_userdb_fk FOREIGN KEY ( userdb_userid )
         REFERENCES userdb ( userid );
-        
-select * from userdb;
-insert into userdb values (1001, 'admin', 'admin');
-insert into userdb values (1002, '이하늘', '1234');
-insert into userdb values (1003, '한여름', '5678');
-insert into userdb values (1004, '강겨울', '4242');
-insert into userdb values (1005, '김봄', '1357');
-insert into userdb values (1006, '수정모', '5869');
-insert into userdb values (1007, '김철수', '43567');
-insert into userdb values (1008, '안영준', '6869');
-insert into userdb values (1009, '백두산', '3278');
-insert into userdb values (1010, '고민혁', '28964');
 
-select * from profile;
-insert into profile values (1001, 'admin@google.com', '부산시 진구','010-1234-5678');
-insert into profile values (1002, 'sky6788@naver.com', '부산시 서구','010-6788-5678');
-insert into profile values (1003, 'summmer1862@hanmail.net', '부산시 남구','010-1862-5428');
-insert into profile values (1004, null, '부산시 해운대구','010-2434-5788');
-insert into profile values (1005, 'spring8885@google.com', '부산시 사상구','010-8885-5538');
-insert into profile values (1006, 'tnwjdah3824@naver.com', '부산시 사하구','010-3824-5678');
-insert into profile values (1007, 'chelsu@naver.com', '대구시 달서구','010-4388-5656');
-insert into profile values (1008, 'an032@google.com', '서울시 영등포구','010-9834-1278');
-insert into profile values (1009, 'bakkmoun23@google.com', '부산시 강서구','010-8567-9976');
-insert into profile values (1010, 'gogomin1377@google.com', '부산시 남구','010-1377-3588');
+ALTER TABLE review
+    ADD CONSTRAINT review_goodsdb_fk FOREIGN KEY ( goodsdb_goodsid )
+        REFERENCES goodsdb ( goodsid );
 
-select * from goodsDB_price;
-insert into goodsDB_price values ('체리쉬 샴푸 전견용 500ml', 4400);
-insert into goodsDB_price values ('체리쉬 샴푸 and 린스 전견용 500ml', 4100);
-insert into goodsDB_price values ('체리쉬 샴푸 and 린스 백모용 4L', 25200);
-insert into goodsDB_price values ('미라클 강아지 벼룩 진드기 예방 샴푸 520ml', 6800);
-insert into goodsDB_price values ('체리쉬 비듬 방지 샴푸 (비듬,피부 질환 방지) 500ml', 4900);
-insert into goodsDB_price values ('뉴벨버드 블루베리 샴푸린스 백모용 750ml', 4400);
-insert into goodsDB_price values ('뉴벨버드 스트로베리 샴푸린스 퍼피 750ml', 7400);
-insert into goodsDB_price values ('뉴벨버드 오트밀 샴푸 린스 750ml', 7400);
-insert into goodsDB_price values ('미라클 순 샴푸 and 린스 퍼피 750ml', 7700);
-insert into goodsDB_price values ('미라클 순 샴푸 and 린스 백모용 750ml', 7700);
-insert into goodsDB_price values ('버박 파이오덤 샴푸 200ml', 25750);
-insert into goodsDB_price values ('버박 세볼리틱 샴푸 200ml', 25750);
-insert into goodsDB_price values ('버박 앨러밀 샴푸 200ml', 25750);
-insert into goodsDB_price values ('쏘아베 비듬 피부질환 샴푸 500ml', 5050);
-insert into goodsDB_price values ('쏘아베 메디케어 이치캄 샴푸 400ml', 5150);
-insert into goodsDB_price values ('체리쉬 약용샴푸 (이벼룩방지) 500ml', 4900);
-insert into goodsDB_price values ('체리쉬 약용샴푸 4L', 32200);
-insert into goodsDB_price values ('에티펫 버블 목욕 시트 15매 (30x20cm)', 4150);
-insert into goodsDB_price values ('에티펫 버블 목욕 시트 10매 (20x20cm)', 2250);
-insert into goodsDB_price values ('네츄럴 테라피 아로마 탄산 솔트 클린샷 입욕제 레몬 and 티트리 12개입', 38500);
-insert into goodsDB_price values ('네츄럴 테라피 아로마 탄산 솔트 클린샷 입욕제 로즈우드 12개입', 38500);
-insert into goodsDB_price values ('천국 거품 샤워 브러쉬 그린', 4900);
-insert into goodsDB_price values ('천국 거품 샤워 브러쉬 핑크', 4900);
-insert into goodsDB_price values ('천국 거품 샤워 브러쉬 블루', 4900);
-insert into goodsDB_price values ('로얄캐닌 캣 센서리 테이스트 파우치 85g', 1850);
-insert into goodsDB_price values ('로얄캐닌 캣 키튼 스테럴라이즈 2kg', 34800);
-insert into goodsDB_price values ('로얄캐닌 캣 페르시안 어덜트 2kg', 37500);
-insert into goodsDB_price values ('로얄캐닌 캣 인도어 롱헤어 2kg', 34800);
-insert into goodsDB_price values ('로얄캐닌 캣 센서리 스멜 파우치 85g', 1850);
-insert into goodsDB_price values ('로얄캐닌 캣 센서리 필 파우치 85g', 1850);
-insert into goodsDB_price values ('비아파 락톨 키티 500g', 35200);
-insert into goodsDB_price values ('비아파 락톨 키티 250g', 17500);
-insert into goodsDB_price values ('로얄캐닌 캣 덴탈케어 1.5kg', 29400);
-insert into goodsDB_price values ('벤티 캣 그레인프리 피모 관절 5kg', 37000);
-insert into goodsDB_price values ('벤티 캣 그레인프리 요로 염증 5kg', 37000);
-insert into goodsDB_price values ('벤티 캣 그레인프리 피부 관절 1.5kg', 12200);
-insert into goodsDB_price values ('벤티 캣 그레인프리 요로 염증 1.5kg', 12200);
-insert into goodsDB_price values ('로얄캐닌 캣 라이트웨이트 케어 파우치 85g', 1800);
-insert into goodsDB_price values ('로얄캐닌 캣 인텐스 뷰티 파우치 85g', 1800);
-insert into goodsDB_price values ('로얄캐닌 캣 스테럴라이즈드 파우치 85g', 1800);
-insert into goodsDB_price values ('로얄캐닌 캣 인스팅티브 7+ 파우치 85g', 1800);
-insert into goodsDB_price values ('로얄캐닌 캣 헤어 and 스킨케어 2kg', 37800);
-insert into goodsDB_price values ('캐츠랑 전연령 리브레 5kg', 19300);
-insert into goodsDB_price values ('캐츠랑 전연령 리브레 2kg', 11200);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 씨푸드 7kg', 31700);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 참치 7kg', 31700);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 닭고기 7kg', 31700);
-insert into goodsDB_price values ('세라피드 그레인프리 체중관리 2kg', 15000);
-insert into goodsDB_price values ('세라피드 그레인프리 요로건강 2kg', 15000);
-insert into goodsDB_price values ('세라피드 그레인프리 헤어볼 컨트롤 2kg', 15000);
-insert into goodsDB_price values ('캐츠랑 맘 and 베이비 4kg', 27000);
-insert into goodsDB_price values ('캐츠랑 맘 and 베이비 2kg', 15200);
-insert into goodsDB_price values ('캐츠랑 어덜트 8kg', 35500);
-insert into goodsDB_price values ('캐츠랑 어덜트 4kg', 22800);
-insert into goodsDB_price values ('캐츠랑 어덜트 2kg', 11900);
-insert into goodsDB_price values ('캐츠랑 키튼 8kg', 39000);
-insert into goodsDB_price values ('캐츠랑 키튼 2kg', 14400);
-insert into goodsDB_price values ('캐츠랑 전연령 7kg', 32000);
-insert into goodsDB_price values ('캐츠랑 전연령 5kg', 19000);
-insert into goodsDB_price values ('캐츠랑 전연령 2kg', 12300);
-insert into goodsDB_price values ('도기프랜드 클라쎄밀 분유 180g', 6700);
-insert into goodsDB_price values ('위스카스 헤어볼 닭고기와 참치 3kg', 27700);
-insert into goodsDB_price values ('로얄캐닌 캣 인도어 7+ 1.5kg', 29400);
-insert into goodsDB_price values ('CP 클래식 캣 키튼 1.5kg', 9100);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 닭고기 1.5kg', 8800);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 참치 1.5kg', 8800);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 씨푸드 1.5kg', 8800);
-insert into goodsDB_price values ('CP 클래식 캣 어덜트 헤어볼 1.5kg', 8800);
-insert into goodsDB_price values ('뉴트리나 비스트로캣 키튼 2kg', 11900);
-insert into goodsDB_price values ('뉴트리나 비스트로캣 어덜트 2kg', 11900);
-insert into goodsDB_price values ('로얄캐닌 피트32 2kg', 37000);
-insert into goodsDB_price values ('더캣츠 냥바 가다랑어살 20g 50개입', 21500);
-insert into goodsDB_price values ('더캣츠 냥바 연어살 20g 15개입', 6900);
-insert into goodsDB_price values ('더캣츠 냥바 가다랑어살 20g 15개입', 6900);
-insert into goodsDB_price values ('더캣츠 냥바 미니 황태살 10g 30개입', 6900);
-insert into goodsDB_price values ('더캣츠 냥바 황태살 20g 15개입', 6900);
-insert into goodsDB_price values ('더캣츠 냥바 황태살 20g 50개', 21500);
-insert into goodsDB_price values ('더캣츠 냥바 미니 연어살 10g 30개입', 6900);
-insert into goodsDB_price values ('더캣츠 냥바 연어살 20g 50개입', 21500);
-insert into goodsDB_price values ('더캣츠 냥바 미니 가다랑어살 10g 30개입', 6900);
-insert into goodsDB_price values ('참좋은간식 내 아이가 빠진 닭 20g', 420);
-insert into goodsDB_price values ('펫루트 우리아이 건강 촉촉한 닭안심 20개입', 19300);
-insert into goodsDB_price values ('위위 닭가슴살 오리지널 22g X 30개', 12600);
-insert into goodsDB_price values ('위위 닭가슴살 가다랑어 22g X 30개', 12600);
-insert into goodsDB_price values ('위위 닭가슴살 새우 22g X 30개', 12600);
-insert into goodsDB_price values ('코코데이 닭가슴살 순살 20g', 420);
-insert into goodsDB_price values ('코코데이 닭가슴살 가쓰오부시 20g', 420);
-insert into goodsDB_price values ('더캣츠 그대로 미니포켓 치킨 12개입', 2950);
-insert into goodsDB_price values ('더캣츠 그대로 미니포켓 참치 10개입', 2950);
-insert into goodsDB_price values ('더캣츠 그대로 미니포켓 연어 10개입', 2950);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 몰트 60g', 2200);
-insert into goodsDB_price values ('프레셔스 크런치 참치 and 연어 8개입', 2950);
-insert into goodsDB_price values ('프레셔스 크런치 참치 and 닭고기 8개입', 2950);
-insert into goodsDB_price values ('프레셔스 크런치 참치 8개입', 2950);
-insert into goodsDB_price values ('프레셔스 고양이 크런치 참치 and 새우 8개입', 2950);
-insert into goodsDB_price values ('냥이줄래 신묘한 참치맛 85g', 2900);
-insert into goodsDB_price values ('냥이줄래 신묘한 치킨맛 85g', 2900);
-insert into goodsDB_price values ('냥이줄래 신묘한 연어맛 85g', 2900);
-insert into goodsDB_price values ('뽀로로펫 크런치캣 소고기 and 클로로필 50g', 2100);
-insert into goodsDB_price values ('프리미요 크런치 참치 50g', 2100);
-insert into goodsDB_price values ('프리미요 크런치 참치 and 닭고기 50g', 2100);
-insert into goodsDB_price values ('프리미요 크런치 참치 and 새우 50g', 2100);
-insert into goodsDB_price values ('프리미요 크런치 참치 and 연어 50g', 2100);
-insert into goodsDB_price values ('캣츠레시피 예스파이 닭고기와 참치맛 3개입', 2000);
-insert into goodsDB_price values ('캣츠레시피 예스파이 닭고기와 연어맛 3개입', 2000);
-insert into goodsDB_price values ('캣츠레시피 오케이 크런치 참치와 연어맛 60g', 1850);
-insert into goodsDB_price values ('캣츠레시피 오케이 크런치 닭고기와 연어맛 60g', 1850);
-insert into goodsDB_price values ('캣츠레시피 오케이 크런치 닭고기와 게살맛 60g', 1850);
-insert into goodsDB_price values ('캣츠레시피 오케이 크런치 참치맛 60g', 1850);
-insert into goodsDB_price values ('캣츠레시피 오케이 크런치 닭고기맛 60g', 1850);
-insert into goodsDB_price values ('미오 스낵 새우 50g', 1600);
-insert into goodsDB_price values ('캐츠랑 저요저요 닭고기 60g', 1550);
-insert into goodsDB_price values ('캐츠랑 저요저요 연어 60g', 1550);
-insert into goodsDB_price values ('캐츠랑 저요저요 참치 60g', 1550);
-insert into goodsDB_price values ('캐츠랑 저요저요 양고기 60g', 1550);
-insert into goodsDB_price values ('더캣츠 쿠키 꽁냥꽁냥 북어 and 연어 100g', 1850);
-insert into goodsDB_price values ('뽀로로펫 맛있는 고양이 스낵 연어 and 새우 and 닭고기 40g', 840);
-insert into goodsDB_price values ('뽀로로펫 맛있는 고양이 스낵 참치 and 페퍼민트 40g', 840);
-insert into goodsDB_price values ('뽀로로펫 맛있는 고양이 스낵 참치 and 닭고기 40g', 840);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 덴탈 60g', 2200);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 연어 60g', 2200);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 폴트리 60g', 2200);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 오리 and 아로니아 60g', 2200);
-insert into goodsDB_price values ('비타크래프트 크리스피 크런치 칠면조 치아씨드 60g', 2200);
-insert into goodsDB_price values ('CP 클래식 캣트릿 참치 80g', 1700);
-insert into goodsDB_price values ('CP 클래식 캣트릿 연어 80g', 1700);
-insert into goodsDB_price values ('브리더 발바닥 스텐식기', 1750);
-insert into goodsDB_price values ('굿프랜드 스텐식기', 1750);
-insert into goodsDB_price values ('수퍼펫 대나무 목 사각식탁 M', 25200);
-insert into goodsDB_price values ('수퍼펫 레인보우 식탁 화이트 M', 21000);
-insert into goodsDB_price values ('수퍼펫 스테인리스 심플보울 L', 12600);
-insert into goodsDB_price values ('수퍼펫 스테인리스 디쉬보울 L', 6150);
-insert into goodsDB_price values ('오션 엠보싱 스텐식기 64oz', 5600);
-insert into goodsDB_price values ('수퍼펫 스테인리스 심플보울 핑크 S', 7300);
-insert into goodsDB_price values ('수퍼펫 스테인리스 디쉬보울 핑크 S', 4900);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 베이비파우더향 15kg', 34700);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 라벤더향 15kg', 34700);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 무향 15kg', 34700);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 베이비파우더향 7kg 2개입', 38300);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 라벤더향 7kg 2개입', 38300);
-insert into goodsDB_price values ('유로리터 소디움 벤토나이트 무향 7kg 2개입', 38300);
-insert into goodsDB_price values ('한그득 아빠가뭐래? 엄마가모래! 라벤더 7L', 7350);
-insert into goodsDB_price values ('한그득 아빠가뭐래? 엄마가모래! 녹차 7L', 7350);
-insert into goodsDB_price values ('한그득 아빠가뭐래? 엄마가모래! 오리지날 7L', 7350);
-insert into goodsDB_price values ('뽀로로펫 모래킹 4L', 4000);
-insert into goodsDB_price values ('에코리에프 캣리터 벤토나이트 레몬향 8L', 7000);
-insert into goodsDB_price values ('카르마 킹오브샌드 벤토나이트 베이비파우더향 5L', 4600);
-insert into goodsDB_price values ('카르마 킹오브샌드 벤토나이트 무향 5L', 4600);
-insert into goodsDB_price values ('카르마 퀸오브샌드 누디 녹차 3kg', 7700);
-insert into goodsDB_price values ('굿프랜드 도모다찌 향모래 레몬 5L', 5600);
-insert into goodsDB_price values ('굿프랜드 도모다찌 모래 5L', 5200);
-insert into goodsDB_price values ('굿프랜드 주주 모래 5kg', 6300);
-insert into goodsDB_price values ('네모네모 두부모래 가는입자 오리지널 7L', 6900);
-insert into goodsDB_price values ('네모네모 두부모래 가는입자 녹차 7L', 6900);
-insert into goodsDB_price values ('네모네모 두부모래 가는입자 라벤더 7L', 6900);
-insert into goodsDB_price values ('더캣츠 두부니? 모래야! 오리지널 7L', 7000);
-insert into goodsDB_price values ('더캣츠 두부니? 모래야! 베이비파우더향 7L', 7000);
-insert into goodsDB_price values ('더캣츠 두부니? 모래야! 녹차향 7L', 7000);
-insert into goodsDB_price values ('카르마 퀸오브샌드 숯 3kg', 8400);
-insert into goodsDB_price values ('카르마 퀸오브샌드 녹차 3kg', 8400);
-insert into goodsDB_price values ('카르마 퀸오브샌드 두부 3kg', 8400);
-insert into goodsDB_price values ('에코 펠라인 퓨어 9.08kg', 16400);
-insert into goodsDB_price values ('에티펫 향기묘책 러블리 코튼향 150g', 8300);
-insert into goodsDB_price values ('에티펫 향기묘책 편백 숲속향 150g', 8300);
-insert into goodsDB_price values ('푸르미 벤티 캣 토일렛 아이보리', 37800);
-insert into goodsDB_price values ('푸르미 벤티 캣 토일렛 인디핑크', 37800);
-insert into goodsDB_price values ('푸르미 벤티 캣 토일렛 그레이', 37800);
-insert into goodsDB_price values ('캣리터 심플 고양이 모래삽', 480);
-insert into goodsDB_price values ('푸르미 3, Door 고양이 화장실 인디핑크', 28000);
-insert into goodsDB_price values ('푸르미 고양이 화장실 소형 인디핑크', 9800);
-insert into goodsDB_price values ('푸르미 고양이 화장실 소형 라이트 그레이', 9800);
-insert into goodsDB_price values ('푸르미 고양이 화장실 소형 아이보리', 9800);
-insert into goodsDB_price values ('푸르미 고양이 화장실 소형 브라운', 9800);
-insert into goodsDB_price values ('푸르미 고양이 화장실 인디핑크 대형', 17400);
-insert into goodsDB_price values ('푸르미 고양이 화장실 라이트 그레이 대형', 17400);
-insert into goodsDB_price values ('푸르미 고양이 화장실 아이보리 대형', 17400);
-insert into goodsDB_price values ('푸르미 고양이 화장실 브라운 대형', 17400);
-insert into goodsDB_price values ('푸르미 3, Door 고양이 화장실 라이트 그레이', 28000);
-insert into goodsDB_price values ('푸르미 3, Door 고양이 화장실 민트', 28000);
-insert into goodsDB_price values ('푸르미 모래삽 (랜덤발송)', 800);
-insert into goodsDB_price values ('아이캣 고양이 화장실 브라운 레귤러', 45200);
-insert into goodsDB_price values ('아이캣 뚱냥이 모래매트 아이보리 점보', 8800);
-insert into goodsDB_price values ('도기프랜드 모래삽 (랜덤발송)', 1050);
-insert into goodsDB_price values ('하겐 심플 변기스푼 블루', 2950);
-insert into goodsDB_price values ('하겐 심플 변기스푼 핑크', 2950);
-insert into goodsDB_price values ('하겐 심플 변기스푼 그레이', 2950);
-insert into goodsDB_price values ('아이캣 뚱냥이 모래매트 아이보리', 6300);
-insert into goodsDB_price values ('포세린 본 식기 세트 소형 2구', 11200);
-insert into goodsDB_price values ('포세린 본 식기 세트 대형 2구', 13650);
-insert into goodsDB_price values ('우쭈쭈 뉴블링 스텐식기 그린', 6450);
-insert into goodsDB_price values ('우쭈쭈 뉴블링 스텐식기 핑크', 6450);
-insert into goodsDB_price values ('우쭈쭈 뉴블링 스텐식기 블루', 6450);
-insert into goodsDB_price values ('우쭈쭈 리본퀄팅식기 그레이', 1950);
-insert into goodsDB_price values ('우쭈쭈 리본퀄팅식기 민트', 1950);
-insert into goodsDB_price values ('우쭈쭈 리본퀄팅식기 핑크', 1950);
-insert into goodsDB_price values ('굿프랜드 스텐 쌍식기 8oz', 4400);
-insert into goodsDB_price values ('브리더 스텐트윈식기 13cm', 12600);
-insert into goodsDB_price values ('수퍼펫 대나무 목 경사식탁', 19200);
-insert into goodsDB_price values ('수퍼펫 올리브 식탁 핑크', 11200);
-insert into goodsDB_price values ('수퍼펫 올리브 식탁 블랙', 11200);
-insert into goodsDB_price values ('수퍼펫 올리브 식탁 화이트', 11200);
-insert into goodsDB_price values ('수퍼펫 실리콘 클린 더블보울 인디언레드', 9800);
-insert into goodsDB_price values ('수퍼펫 힐링 식탁 블랙', 16400);
-insert into goodsDB_price values ('비아파 락톨 퍼피 250g', 15750);
-insert into goodsDB_price values ('아침애 수제사료 황태 1kg', 15400);
-insert into goodsDB_price values ('벤티 독 그레인프리 관절 5kg', 36000);
-insert into goodsDB_price values ('벤티 독 그레인프리 피부 5kg', 36000);
-insert into goodsDB_price values ('벤티 독 그레인프리 체중 중성화 1.5kg', 12200);
-insert into goodsDB_price values ('로얄캐닌 다이제스티브 케어 파우치 85g', 1950);
-insert into goodsDB_price values ('도그랑 훼미리 닭고기와 쌀 퍼피 2kg', 10800);
-insert into goodsDB_price values ('도그랑 패밀리 중대형견 10kg', 22000);
-insert into goodsDB_price values ('도그랑 브론즈 전연령 5kg', 13300);
-insert into goodsDB_price values ('로얄캐닌 미니 스테럴라이즈드 파우치 85g', 1950);
-insert into goodsDB_price values ('로얄캐닌 라이트웨이트 케어 파우치 85g', 1950);
-insert into goodsDB_price values ('로얄캐닌 푸들 어덜트 파우치 85g', 1950);
-insert into goodsDB_price values ('로얄캐닌 미니 퍼피 그레이비 파우치 85g', 1750);
-insert into goodsDB_price values ('도그랑 클래식 전연령 5kg', 13600);
-insert into goodsDB_price values ('도그랑 훼미리 닭고기와 쌀 어덜트 2kg', 10200);
-insert into goodsDB_price values ('아침애 수제사료 한우 800g', 15400);
-insert into goodsDB_price values ('아침애 수제사료 다이어트 1kg', 15400);
-insert into goodsDB_price values ('아침애 수제사료 피부 개선 3kg', 44000);
-insert into goodsDB_price values ('아침애 수제사료 오리 연어 감자 1kg', 15400);
-insert into goodsDB_price values ('아침애 수제사료 오리 감자 연어 3kg', 44000);
-insert into goodsDB_price values ('아침애 수제사료 한우 2.4kg', 44000);
-insert into goodsDB_price values ('소프트플러스 참좋은 황태사료 오리 1kg', 12600);
-insert into goodsDB_price values ('소프트플러스 참좋은 황태사료 연어 1kg', 12600);
-insert into goodsDB_price values ('CP 클래식 어덜트 스몰 브리드 소고기 2kg', 9000);
-insert into goodsDB_price values ('CP 클래식 퍼피 밀크 2kg', 9000);
-insert into goodsDB_price values ('CP 클래식 독 어덜트 양고기 2kg', 9000);
-insert into goodsDB_price values ('CP 클래식 독 어덜트 닭고기 2kg', 9000);
-insert into goodsDB_price values ('CP 클래식 독 어덜트 소고기 2kg', 9000);
-insert into goodsDB_price values ('뉴트리나 다이어트 2.1kg', 12500);
-insert into goodsDB_price values ('뉴트리나 어덜트 연어 2.1kg', 12500);
-insert into goodsDB_price values ('뉴트리나 퍼피 2.1kg', 12500);
-insert into goodsDB_price values ('디럭스락 분유 200g', 8250);
-insert into goodsDB_price values ('데이스포 초유분유 200g', 10500);
-insert into goodsDB_price values ('굿프랜드 철장 걸이식기 20oz', 3700);
-insert into goodsDB_price values ('굿프랜드 철장 걸이식기 30oz', 4400);
-insert into goodsDB_price values ('요기쏘 반려동물 사료 보관함 2kg', 7000);
-insert into goodsDB_price values ('리플랜디시 정수 필터 3개입', 11350);
-insert into goodsDB_price values ('펫블랑 기저귀 남아용 대형 12매', 6000);
-insert into goodsDB_price values ('펫블랑 기저귀 남아용 중형 12매', 5300);
-insert into goodsDB_price values ('펫블랑 기저귀 남아용 소형 12매', 4500);
-insert into goodsDB_price values ('펫블랑 기저귀 여아용 대형 12매', 6000);
-insert into goodsDB_price values ('펫블랑 기저귀 여아용 중형 12매', 5350);
-insert into goodsDB_price values ('펫블랑 기저귀 여아용 소형 12매', 4900);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 여아용 5단계 10매', 4900);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 여아용 2단계 10매', 4900);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 남여공용 1단계 10매', 4900);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 남아용 3단계 10매', 7300);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 남아용 2단계 10매', 7300);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 남아용 1단계 10매', 7300);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 여아용 4단계 10매', 4900);
-insert into goodsDB_price values ('요요쉬 애견 기저귀 여아용 3단계 10매', 4900);
-insert into goodsDB_price values ('아몬스 애견기저귀 초소형견용 10매', 5250);
-insert into goodsDB_price values ('아몬스 애견기저귀 소형견용 10매', 5250);
-insert into goodsDB_price values ('아몬스 애견기저귀 중형견용 10매', 5250);
-insert into goodsDB_price values ('아몬스 수컷용 애견기저귀 초소형견 10매', 4900);
-insert into goodsDB_price values ('아몬스 수컷용 애견기저귀 소형견 10매', 4900);
-insert into goodsDB_price values ('아몬스 수컷용 애견기저귀 중형견 10매', 4900);
-insert into goodsDB_price values ('탐사 실속형 배변패드,  100매,  6개', 32290);
-insert into goodsDB_price values ('한입먹개 오리 스틱 300g', 2450);
-insert into goodsDB_price values ('한입먹개 오리 큐브 300g', 2450);
-insert into goodsDB_price values ('한입먹개 오리 스테이크 300g', 2450);
-insert into goodsDB_price values ('한입먹개 소고기 스틱 300g', 2450);
-insert into goodsDB_price values ('한입먹개 소고기 큐브 300g', 2450);
-insert into goodsDB_price values ('한입먹개 소고기 스테이크 300g', 2450);
-insert into goodsDB_price values ('퓨어밥 연어 큐브 300g', 2750);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 고구마치킨 300g', 2500);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 소고기 300g', 2500);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 치킨 300g', 2500);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 오리 300g', 2500);
-insert into goodsDB_price values ('착한간식 소고기 스테이크 300g', 2400);
-insert into goodsDB_price values ('착한간식 소고기 슬라이스 300g', 2400);
-insert into goodsDB_price values ('한간식 소고기 큐브 300g', 2400);
-insert into goodsDB_price values ('뉴트리오 소고기 연골 큐블 300g', 4200);
-insert into goodsDB_price values ('뉴트리오 치킨 연골 큐블 300g', 4200);
-insert into goodsDB_price values ('펫스토랑 오리 스테이크 300g', 2650);
-insert into goodsDB_price values ('펫스토랑 오리 스테이크 혼합 300g', 2650);
-insert into goodsDB_price values ('펫스토랑 소고기 스테이크 큐브 300g', 2650);
-insert into goodsDB_price values ('펫스토랑 소고기 스테이크 슬라이스 300g', 2650);
-insert into goodsDB_price values ('아르테미스 제스퍼 져키 양고기 400g', 7600);
-insert into goodsDB_price values ('뉴트리오 오리 연골 큐블 300g', 4200);
-insert into goodsDB_price values ('뉴트리오 오리 연골 스테이크 300g', 3800);
-insert into goodsDB_price values ('뉴트리오 치킨 연골 스테이크 300g', 3800);
-insert into goodsDB_price values ('뉴트리오 소고기 연골 스테이크 300g', 3800);
-insert into goodsDB_price values ('뉴트리오 홍삼 오리 큐블 300g', 4200);
-insert into goodsDB_price values ('뉴트리오 홍삼 치킨 큐블 300g', 4200);
-insert into goodsDB_price values ('메가미트 치킨 윙 1kg', 19700);
-insert into goodsDB_price values ('메가미트 치킨 고구마 1kg', 19700);
-insert into goodsDB_price values ('메가미트 치킨 비스켓 1kg', 19700);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 치킨 라이스 큐브 300g', 2500);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 치킨 고구마 라이스 스틱 300g', 2500);
-insert into goodsDB_price values ('메가미트 치킨 빼빼로 1kg', 19700);
-insert into goodsDB_price values ('메가미트 오리 윙 1kg', 19700);
-insert into goodsDB_price values ('메가미트 오리 고구마 1kg', 19700);
-insert into goodsDB_price values ('메가미트 오리 우유스틱 1kg', 19700);
-insert into goodsDB_price values ('메가미트 오리 비스켓 1kg', 19700);
-insert into goodsDB_price values ('메가미트 오리 빼빼로 1kg', 19700);
-insert into goodsDB_price values ('메가미트 소고기 스테이크 슬라이스 1kg', 19700);
-insert into goodsDB_price values ('메가미트 소고기 스테이크 큐브 1kg', 19700);
-insert into goodsDB_price values ('메가미트 소고기 스테이크 스틱 1kg', 19700);
-insert into goodsDB_price values ('메가미트 소고기 스테이크 덤벨 1kg', 19700);
-insert into goodsDB_price values ('메가미트 칠면조 스테이크 덤벨 1kg', 19700);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 오리 라이스 스틱 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 소고기 라이스 큐브 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 연어 라이스 큐브 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 오리 라이스 큐브 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 치킨 고구마 라이스 큐브 300g', 2550);
-insert into goodsDB_price values ('펫스토랑 황태 스테이크 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 황태 스테이크 혼합 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 황태 스테이크 큐브 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 황태 스테이크 슬라이스 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 오리 스테이크 큐브 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 연어 스테이크 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 연어 스테이크 혼합 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 연어 스테이크 큐브 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 연어 스테이크 슬라이스 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 소고기 스테이크 300g', 2700);
-insert into goodsDB_price values ('펫스토랑 소고기 스테이크 혼합 300g', 2700);
-insert into goodsDB_price values ('아르테미스 제스퍼 저키 칠면조 400g', 7600);
-insert into goodsDB_price values ('아르테미스 제스퍼 져키 오리고기 400g', 7600);
-insert into goodsDB_price values (' 제스퍼 져키 양고기 400g', 7600);
-insert into goodsDB_price values ('아르테미스 제스퍼 져키 연어 400g', 7600);
-insert into goodsDB_price values ('아르테미스 제스퍼 져키 닭고기 400g', 7600);
-insert into goodsDB_price values ('뉴트리오 오리 돈까스 400g', 5900);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 소고기 라이스 스틱 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 연어 라이스 스틱 300g', 2550);
-insert into goodsDB_price values ('참좋은간식 쫀득쫀득 져키 치킨 라이스 스틱 300g', 2550);
-insert into goodsDB_price values ('퓨어밥 오리 큐브 300g', 2750);
-insert into goodsDB_price values ('퓨어밥 오리 슬라이스 300g', 2750);
-insert into goodsDB_price values ('퓨어밥 오리 스테이크 300g', 2750);
-insert into goodsDB_price values ('퓨어밥 연어 슬라이스 300g', 2750);
-insert into goodsDB_price values ('메가미트 연어 스테이크 슬라이스 1kg', 19700);
-insert into goodsDB_price values ('메가미트 연어 스테이크 큐브 1kg', 19700);
-insert into goodsDB_price values ('메가미트 연어 스테이크 스틱 1kg', 19700);
-insert into goodsDB_price values ('메가미트 연어 스테이크 덤벨 1kg', 19700);
-insert into goodsDB_price values ('메가미트 칠면조 스테이크 슬라이스 1kg', 19700);
-insert into goodsDB_price values ('메가미트 칠면조 스테이크 큐브 1kg', 19700);
-insert into goodsDB_price values ('메가미트 칠면조 스테이크 스틱 1kg', 19700);
-insert into goodsDB_price values ('착한간식 치킨쌀스틱 300g', 2400);
-insert into goodsDB_price values ('펫스토랑 오리 스테이크 슬라이스 300g', 2650);
-insert into goodsDB_price values ('도그피앙 소고기 and 치즈 100g', 1350);
-insert into goodsDB_price values ('도그피앙 소고기 100g', 1350);
-insert into goodsDB_price values ('도그피앙 양고기 100g', 1350);
-insert into goodsDB_price values ('도그피앙 연어 100g', 1350);
-insert into goodsDB_price values ('도그피앙 오리고기 100g', 1350);
-insert into goodsDB_price values ('도그피앙 닭고기 100g', 1350);
-insert into goodsDB_price values ('비타크래프트 조에시 하트캔 치킨 and 당근 and 완두콩 85g', 1350);
-insert into goodsDB_price values ('비타크래프트 조에시 하트캔 칠면조 and 당근 85g', 1350);
-insert into goodsDB_price values ('비타크래프트 조에시 하트캔 오리 and 시금치 85g', 1350);
-insert into goodsDB_price values ('비타크래프트 조에시 하트캔 오리 and 배 85g', 1350);
-insert into goodsDB_price values ('헬로도기 오리고기 캔 400g', 1700);
-insert into goodsDB_price values ('헬로도기 양고기 캔 400g', 1700);
-insert into goodsDB_price values ('헬로도기 소고기 캔 400g', 1700);
-insert into goodsDB_price values ('헬로도기 닭고기 캔 400g', 1700);
-insert into goodsDB_price values ('내츄럴독 청크 닭고기 375g', 1350);
-insert into goodsDB_price values ('내츄럴독 청크 소고기 375g', 1350);
-insert into goodsDB_price values ('내츄럴독 청크 양고기 375g', 1350);
-insert into goodsDB_price values ('러브썸 독 양고기 캔 85g', 830);
-insert into goodsDB_price values ('러브썸 독 소고기 캔 85g', 830);
-insert into goodsDB_price values ('러브썸 독 닭고기 캔 85g', 830);
-insert into goodsDB_price values ('구루머스 독 램 and 치킨 100g', 1100);
-insert into goodsDB_price values ('구루머스 독 비프 and 치킨 100g', 1100);
-insert into goodsDB_price values ('구루머스 독 치킨 100g', 1100);
-insert into goodsDB_price values ('구루머스 독 오리 100g', 1100);
-insert into goodsDB_price values ('베게브랜드 사각 닭고기 캔 100g', 1000);
-insert into goodsDB_price values ('베게브랜드 사각 오리고기 캔 100g', 1000);
-insert into goodsDB_price values ('베게브랜드 사각 양고기 캔 100g', 1000);
-insert into goodsDB_price values ('베게브랜드 사각 소고기 캔 100g', 1000);
-insert into goodsDB_price values ('럭셔리독 소고기 100g', 1300);
-insert into goodsDB_price values ('럭셔리독 닭고기 100g', 1300);
-insert into goodsDB_price values ('럭셔리독 양고기 100g', 1300);
-insert into goodsDB_price values ('럭셔리독 소고기와 닭고기 100g', 1300);
-insert into goodsDB_price values ('럭셔리독 소고기와 치즈 100g', 1300);
-insert into goodsDB_price values ('럭셔리독 소고기 375g', 1700);
-insert into goodsDB_price values ('럭셔리독 닭고기 375g', 1700);
-insert into goodsDB_price values ('럭셔리독 양고기 375g', 1700);
-insert into goodsDB_price values ('아리아스 닭고기 사각캔 100g', 1250);
-insert into goodsDB_price values ('아리아스 오리고기 사각캔 100g', 1250);
-insert into goodsDB_price values ('아리아스 칠면조 and 닭고기 사각캔 100g', 1250);
-insert into goodsDB_price values ('아리아스 칠면조 and 생선 사각캔 100g', 1250);
-insert into goodsDB_price values ('럭셔리발란스 주식캔 양고기 380g', 1550);
-insert into goodsDB_price values ('럭셔리발란스 주식캔 닭고기 380g', 1550);
-insert into goodsDB_price values ('럭셔리발란스 주식캔 소고기 380g', 1550);
-insert into goodsDB_price values ('뉴트리오 닭고기 and 게살 100g', 1200);
-insert into goodsDB_price values ('뉴트리오 닭고기 100g', 1200);
-insert into goodsDB_price values ('뉴트리오 닭고기 and 소고기 100g', 1200);
-insert into goodsDB_price values ('뉴트리오 닭고기 and 쌀 100g', 1200);
-insert into goodsDB_price values ('뉴트리오 닭고기 and 새우 100g', 1200);
-insert into goodsDB_price values ('굿프랜드 스페셜서퍼 소고기 285g', 1700);
-insert into goodsDB_price values ('굿프랜드 스페셜서퍼 양고기 285g', 1700);
-insert into goodsDB_price values ('굿프랜드 독 닭고기 and 쌀 캔 100g', 1200);
-insert into goodsDB_price values ('굿프랜드 독 닭고기 and 소고기 캔 100g', 1200);
-insert into goodsDB_price values ('굿프랜드 독 닭고기 캔 100g', 1200);
-insert into goodsDB_price values ('굿프랜드 독 닭고기 and 야채 캔 100g', 1200);
-insert into goodsDB_price values ('굿프랜드 독 닭고기 and 새우 캔 100g', 1200);
-insert into goodsDB_price values ('츄렙 딩고껌 연어 10.5인치 2개입', 3400);
-insert into goodsDB_price values ('츄렙 딩고껌 연어 7.5인치 2개입', 4150);
-insert into goodsDB_price values ('츄렙 딩고껌 연어 4.5인치 5개입', 4150);
-insert into goodsDB_price values ('츄렙 딩고껌 연어 2.5인치 13개입', 4150);
-insert into goodsDB_price values ('츄렙 스틱껌 연어 15개입', 4150);
-insert into goodsDB_price values ('인벳 츄잉본 민트 100g', 3500);
-insert into goodsDB_price values ('아임펫 덴탈케어 껌 닭고기 80g', 2450);
-insert into goodsDB_price values ('아임펫 덴탈케어 껌 소고기 80g', 2450);
-insert into goodsDB_price values ('아임펫 덴탈케어 껌 오리고기 80g', 2450);
-insert into goodsDB_price values ('앱솔루트 수제간식 닭갈비 6개입', 5250);
-insert into goodsDB_price values ('뉴트리오 오리고기 스틱 400g', 5300);
-insert into goodsDB_price values ('퍼피프랜드 이거미츄 연어 스테이크 껌 16개입', 7100);
-insert into goodsDB_price values ('퍼피프랜드 이거미츄 연어 스테이크 껌 3개입', 7100);
-insert into goodsDB_price values ('퍼피프랜드 이거미츄 소고기 스테이크 껌 24개입', 7100);
-insert into goodsDB_price values ('퍼피프랜드 이거미츄 소고기 스테이크 껌 16개입', 7100);
-insert into goodsDB_price values ('퍼피프랜드 이거미츄 소고기 스테이크 껌 3개입', 7100);
-insert into goodsDB_price values ('브리더랩 황태츄 본 M 1개입', 2500);
-insert into goodsDB_price values ('브리더랩 황태츄 본 S 1개입', 1250);
-insert into goodsDB_price values ('브리더랩 황태츄 링 M 1개입', 2500);
-insert into goodsDB_price values ('브리더랩 황태츄 링 S 1개입', 1250);
-insert into goodsDB_price values ('브리더랩 제로팩 말랑 치즈 황태껌 100g', 2950);
-insert into goodsDB_price values ('브리더랩 제로팩 말랑 황태껌 100g', 2950);
-insert into goodsDB_price values ('스위트키스 양치껌 청사과 100g', 3150);
-insert into goodsDB_price values ('스위트키스 양치껌 바나나 100g', 3150);
-insert into goodsDB_price values ('츄렙 딩고껌 소고기 7.5인치 2개입', 4150);
-insert into goodsDB_price values ('츄렙 딩고껌 소고기 4.5인치 5개입', 4150);
-insert into goodsDB_price values ('우프우프 슈퍼노트 6개입', 3000);
-insert into goodsDB_price values ('우프우프 울트라트위스트 3개입', 3000);
-insert into goodsDB_price values ('수제 핫도그 황태 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 연어 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 오리고기 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 소고기 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 닭고기 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 양고기 100g', 3500);
-insert into goodsDB_price values ('수제 핫도그 군고구마 100g', 3500);
-insert into goodsDB_price values ('뉴트리오 칠면조 힘줄 나티드본 M 6개입', 6300);
-insert into goodsDB_price values ('뉴트리오 칠면조 힘줄 나티드본 S 10개입', 6300);
-insert into goodsDB_price values ('브리더랩 럭키덴탈 아이브라이트 100g', 2150);
-insert into goodsDB_price values ('브리더랩 럭키덴탈 조인트 100g', 2150);
-insert into goodsDB_price values ('참좋은간식 멍빼로 치킨간 12개입', 2450);
-insert into goodsDB_price values ('참좋은간식 멍빼로 스트로베리 12개입', 2450);
-insert into goodsDB_price values ('참좋은간식 멍빼로 클로렐라 12개입', 2450);
-insert into goodsDB_price values ('참좋은간식 멍빼로 블루베리 12개입', 2450);
-insert into goodsDB_price values ('더내추럴 퍼니츄 위드터키 링 S', 1200);
-insert into goodsDB_price values ('참좋은간식 스트레스 리스 스트립스낵 소고기 30개입', 2800);
-insert into goodsDB_price values ('참좋은간식 스트레스 리스 트위스트 스틱 연어 8개입', 2800);
-insert into goodsDB_price values ('참좋은간식 스트레스 리스 트위스트 스틱 소고기 8개입', 2800);
-insert into goodsDB_price values ('참좋은간식 스트레스 리스 트위스트 스틱 오리고기 8개입', 2800);
-insert into goodsDB_price values ('참좋은간식 스트레스 리스 트위스트 스틱 닭고기 8개입', 2800);
-insert into goodsDB_price values ('핑거푸드 닭고기 핫도그 120g', 2800);
-insert into goodsDB_price values ('핑거푸드 오리고기 핫도그 120g', 2800);
-insert into goodsDB_price values ('핑거푸드 양고기 핫도그 120g', 2800);
-insert into goodsDB_price values ('스마트본 트위스트 스틱 피넛 50개입', 13400);
-insert into goodsDB_price values ('내추럴EX 소고기츄 S 1개입', 1600);
-insert into goodsDB_price values ('참좋은간식 하얀소세지 북어 20개입', 2650);
-insert into goodsDB_price values ('참좋은간식 하얀소세지 소고기 20개입', 2650);
-insert into goodsDB_price values ('수제 핫도그 옥수수 100g', 3500);
-insert into goodsDB_price values ('메타멍스 장 건강 5개입', 1750);
-insert into goodsDB_price values ('메타멍스 눈 건강 5개입', 1750);
-insert into goodsDB_price values ('메타멍스 체중 유지 5개입', 1750);
-insert into goodsDB_price values ('메타멍스 면역력 건강 5개입', 1750);
-insert into goodsDB_price values ('메타멍스 관절 건강 5개입', 1750);
-insert into goodsDB_price values ('바우와우 체다 치즈볼 100g', 2900);
-insert into goodsDB_price values ('바우와우 치킨 치즈롤 120g', 2900);
-insert into goodsDB_price values ('바우와우 혼합간식 150g', 2900);
-insert into goodsDB_price values ('바우와우 임실 모짜렐라 치즈 스틱 70g', 3850);
-insert into goodsDB_price values ('바우와우 당근 치즈볼 100g', 2900);
-insert into goodsDB_price values ('바우와우 연어 치즈롤 120g', 2900);
-insert into goodsDB_price values ('참좋은간식 삼계죽 80g', 1050);
-insert into goodsDB_price values ('참좋은간식 삼계 북어죽 80g', 1050);
-insert into goodsDB_price values ('순우리 혼합간식 100g', 1700);
-insert into goodsDB_price values ('퍼피아이 시니어 소프트 황태 소프트 너겟 80g', 2850);
-insert into goodsDB_price values ('퍼피아이 시니어 소프트 눈 영양롤 100g', 2850);
-insert into goodsDB_price values ('퍼피아이 시니어 소프트 관절 영양롤 100g', 2850);
-insert into goodsDB_price values ('퍼피아이 시니어 소프트 고구마 스틱 100g', 2850);
-insert into goodsDB_price values ('참좋은간식 길개먹개 연어 2개입', 1700);
-insert into goodsDB_price values ('참좋은간식 길개먹개 소고기 2개입', 1700);
-insert into goodsDB_price values ('참좋은간식 길개먹개 오리고기 2개입', 1700);
-insert into goodsDB_price values ('참좋은간식 길개먹개 닭고기 2개입', 1700);
-insert into goodsDB_price values ('코코데이 닭가슴살 게살 20g', 420);
-insert into goodsDB_price values ('참좋은간식 하얀소세지 연어 20개입', 2650);
-insert into goodsDB_price values ('참좋은간식 하얀소세지 치킨치즈 20개입', 2650);
-insert into goodsDB_price values ('수제 닭꼬치 90g', 3100);
-insert into goodsDB_price values ('수제 양꼬치 90g', 3100);
-insert into goodsDB_price values ('수제 연어꼬치 90g', 3100);
-insert into goodsDB_price values ('수제 오리꼬치 90g', 3100);
-insert into goodsDB_price values ('수제 소고기 꼬치 90g', 3100);
-insert into goodsDB_price values ('설레개 치킨 20개입', 7000);
-insert into goodsDB_price values ('설레개 치킨 1개입', 2400);
-insert into goodsDB_price values ('설레개 소고기 20개입', 7000);
-insert into goodsDB_price values ('설레개 소고기 1개입', 2400);
-insert into goodsDB_price values ('설레개 양고기 20개입', 7000);
-insert into goodsDB_price values ('설레개 양고기 1개입', 2400);
-insert into goodsDB_price values ('레개 연어 20개입', 7000);
-insert into goodsDB_price values ('설레개 연어 1개입', 2400);
-insert into goodsDB_price values ('참좋은간식 소울대 and 연어 20g', 850);
-insert into goodsDB_price values ('뉴트리오 소울대 and 닭고기 140g', 4200);
-insert into goodsDB_price values ('오리사랑 오리덤벨 400g', 4650);
-insert into goodsDB_price values ('굿프랜드 슬라이스사사미 60g', 1600);
-insert into goodsDB_price values ('오리가쿵 맛있는 큐브 200g', 4800);
-insert into goodsDB_price values ('극상소재 맛집 닭고기 200g', 4800);
-insert into goodsDB_price values ('극상소재 맛집 소고기 200g', 4800);
-insert into goodsDB_price values ('극상소재 맛집 양고기 200g', 4800);
-insert into goodsDB_price values ('극상소재 맛집 황태 200g', 4800);
-insert into goodsDB_price values ('브리더랩 제로팩 샌드 치킨 and 황태 100g', 2950);
-insert into goodsDB_price values ('브리더랩 제로팩 샌드 소고기 and 황태 100g', 2950);
-insert into goodsDB_price values ('브리더랩 제로팩 샌드 오리 and 황태 100g', 2950);
-insert into goodsDB_price values ('브리더랩 제로팩 샌드 연어 and 황태 100g', 2950);
-insert into goodsDB_price values ('펫러닝 갬성버거 오리고기 치즈 100g', 840);
-insert into goodsDB_price values ('펫러닝 갬성버거 소고기 치즈 100g', 840);
-insert into goodsDB_price values ('참좋은간식 고구마 치즈 연어봉 100g', 2100);
-insert into goodsDB_price values ('참좋은간식 고구마 치즈 오리봉 100g', 2100);
-insert into goodsDB_price values ('참좋은간식 고구마 치즈 치킨말이 100g', 2100);
-insert into goodsDB_price values ('아침애 연어버거 100g', 670);
-insert into goodsDB_price values ('아침애 오리버거 100g', 670);
-insert into goodsDB_price values ('좋은친구들 소고기 스테이크 50g', 2600);
-insert into goodsDB_price values ('좋은친구들 참치 스테이크 50g', 2600);
-insert into goodsDB_price values ('좋은친구들 연어 스테이크 50g', 2600);
-insert into goodsDB_price values ('개이득 혼합 스몰 바이트 200g', 2600);
-insert into goodsDB_price values ('참좋은간식 소울대 and 참치 20g', 850);
-insert into goodsDB_price values ('뉴트리오 오리 북어 말이 180g', 5000);
-insert into goodsDB_price values ('개꿀 소고기 져키 70g', 3400);
-insert into goodsDB_price values ('연어가쿵 맛있는 큐브 200g', 4800);
-insert into goodsDB_price values ('개이득 오리 큐브 200g', 4900);
-insert into goodsDB_price values ('개이득 오리 슬라이스 200g', 4900);
-insert into goodsDB_price values ('개이득 연어 큐브 200g', 4900);
-insert into goodsDB_price values ('개이득 연어 슬라이스 200g', 4900);
-insert into goodsDB_price values ('개이득 소 큐브 200g', 4900);
-insert into goodsDB_price values ('개이득 소 슬라이스 200g', 4900);
-insert into goodsDB_price values ('바우와우 치킨져키 150g', 2800);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 오리 and 북어 4개입', 2800);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 연어 and 북어 4개입', 2800);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 소 and 북어 4개입', 2800);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 치킨 and 북어 1개입', 770);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 연어 and 북어 1개입', 770);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 소 and 북어 1개입', 770);
-insert into goodsDB_price values ('참좋은간식 꼬치꼬치 치킨 and 북어 4개입', 2800);
-insert into goodsDB_price values ('참좋은간식 버팔로 치킨츄 본 S 5개입', 4500);
-insert into goodsDB_price values ('참좋은간식 치킨 연어 호박 큐브 100g', 2500);
-insert into goodsDB_price values ('참좋은간식 치킨 연어 브로콜리 큐브 100g', 2500);
-insert into goodsDB_price values ('참좋은간식 치킨 연어 당근 큐브 100g', 2500);
-insert into goodsDB_price values ('뉴트리오 닭 북어 말이 180g', 5000);
-insert into goodsDB_price values ('뉴트리오 소울대 and 오리고기 140g', 4200);
-insert into goodsDB_price values ('뉴트리오 소울대 and 소고기 140g', 4200);
-insert into goodsDB_price values ('개꿀 오리고기 져키 70g', 3400);
-insert into goodsDB_price values ('브리더랩 믹스쿵 스몰바이트', 4800);
-insert into goodsDB_price values ('오리사랑 오리고구마 400g', 4650);
-insert into goodsDB_price values ('오리사랑 오리슬라이스 400g', 4650);
-insert into goodsDB_price values ('오리가쿵 맛있는 슬라이스 200g', 4800);
-insert into goodsDB_price values ('연어가쿵 맛있는 슬라이스 200g', 4800);
-insert into goodsDB_price values ('소가쿵 맛있는 큐브 200g', 4800);
-insert into goodsDB_price values ('팔팔스틱 눈 30개입', 17700);
-insert into goodsDB_price values ('팔팔스틱 멀티 30개입', 17700);
-insert into goodsDB_price values ('버박 뉴트리 플러스겔 종합영양제 120.5g', 20500);
-insert into goodsDB_price values ('뉴트리플러스젠 키토산 영양제 120g', 8100);
-insert into goodsDB_price values ('펫슐랭 컨텍트 아이즈 180g', 10000);
-insert into goodsDB_price values ('데이스포 에이치 시리즈 종합영양제 250g', 12300);
-insert into goodsDB_price values ('뉴트리플러스젠 오메가3 120g', 8100);
-insert into goodsDB_price values ('뉴트리플러스젠 병후회복 체력증진 홍삼 120g', 8100);
-insert into goodsDB_price values ('뉴트리플러스젠 종합영양제 성견용 비타민파워 120g', 8100);
-insert into goodsDB_price values ('뉴트리플러스젠 종합영양제 퍼피 베이직 120g', 8100);
-insert into goodsDB_price values ('프로이젠 종합 비타민 영양제 30개입', 7550);
+ALTER TABLE review
+    ADD CONSTRAINT review_orders_fk FOREIGN KEY ( orders_orderid )
+        REFERENCES orders ( orderid );
 
-select * from goodsDB;
-insert into goodsDB values (30301 ,'체리쉬 샴푸 전견용 500ml'); 
-insert into goodsDB values (30302 ,'체리쉬 샴푸 and 린스 전견용 500ml'); 
-insert into goodsDB values (30303 ,'체리쉬 샴푸 and 린스 백모용 4L');
-insert into goodsDB values (30304 ,'미라클 강아지 벼룩 진드기 예방 샴푸 520ml');
-insert into goodsDB values (30305 ,'체리쉬 비듬 방지 샴푸 비듬,피부 질환 방지) 500ml');
-insert into goodsDB values (30201 ,'뉴벨버드 블루베리 샴푸린스 백모용 750ml');
-insert into goodsDB values (30202 ,'뉴벨버드 스트로베리 샴푸린스 퍼피 750ml');
-insert into goodsDB values (30203 ,'뉴벨버드 오트밀 샴푸 린스 750ml');
-insert into goodsDB values (30204 ,'미라클 순 샴푸 and 린스 퍼피 750ml');
-insert into goodsDB values (30205 ,'미라클 순 샴푸 and 린스 백모용 750ml');
-insert into goodsDB values (30101 ,'버박 파이오덤 샴푸 200ml');
-insert into goodsDB values (30102 ,'버박 세볼리틱 샴푸 200ml');
-insert into goodsDB values (30103 ,'버박 앨러밀 샴푸 200ml');
-insert into goodsDB values (30104 ,'쏘아베 비듬 피부질환 샴푸 500ml');
-insert into goodsDB values (30105 ,'쏘아베 메디케어 이치캄 샴푸 400ml');
-insert into goodsDB values (30106 ,'체리쉬 약용샴푸 이벼룩방지) 500ml');
-insert into goodsDB values (30107 ,'체리쉬 약용샴푸 4L');
-insert into goodsDB values (30108 ,'에티펫 버블 목욕 시트 15매 30x20cm)');
-insert into goodsDB values (30109 ,'에티펫 버블 목욕 시트 10매 20x20cm)');
-insert into goodsDB values (30110 ,'네츄럴 테라피 아로마 탄산 솔트 클린샷 입욕제 레몬 and 티트리 12개입');
-insert into goodsDB values (30111 ,'네츄럴 테라피 아로마 탄산 솔트 클린샷 입욕제 로즈우드 12개입');
-insert into goodsDB values (30112 ,'천국 거품 샤워 브러쉬 그린');
-insert into goodsDB values (30113 ,'천국 거품 샤워 브러쉬 핑크');
-insert into goodsDB values (30114 ,'천국 거품 샤워 브러쉬 블루');
-insert into goodsDB values (70101 ,'로얄캐닌 캣 센서리 테이스트 파우치 85g'); 
-insert into goodsDB values (70102 ,'로얄캐닌 캣 키튼 스테럴라이즈 2kg'); 
-insert into goodsDB values (70103 ,'로얄캐닌 캣 페르시안 어덜트 2kg'); 
-insert into goodsDB values (70104 ,'로얄캐닌 캣 인도어 롱헤어 2kg'); 
-insert into goodsDB values (70105 ,'로얄캐닌 캣 센서리 스멜 파우치 85g'); 
-insert into goodsDB values (70106 ,'로얄캐닌 캣 센서리 필 파우치 85g'); 
-insert into goodsDB values (70107 ,'비아파 락톨 키티 500g'); 
-insert into goodsDB values (70108 ,'비아파 락톨 키티 250g'); 
-insert into goodsDB values (70109 ,'로얄캐닌 캣 덴탈케어 1.5kg'); 
-insert into goodsDB values (70110 ,'벤티 캣 그레인프리 피모 관절 5kg'); 
-insert into goodsDB values (70111 ,'벤티 캣 그레인프리 요로 염증 5kg'); 
-insert into goodsDB values (70112 ,'벤티 캣 그레인프리 피부 관절 1.5kg'); 
-insert into goodsDB values (70113 ,'벤티 캣 그레인프리 요로 염증 1.5kg'); 
-insert into goodsDB values (70113 ,'로얄캐닌 캣 라이트웨이트 케어 파우치 85g'); 
-insert into goodsDB values (70114 ,'로얄캐닌 캣 인텐스 뷰티 파우치 85g'); 
-insert into goodsDB values (70115 ,'로얄캐닌 캣 스테럴라이즈드 파우치 85g'); 
-insert into goodsDB values (70116 ,'로얄캐닌 캣 인스팅티브 7+ 파우치 85g'); 
-insert into goodsDB values (70117 ,'로얄캐닌 캣 헤어 and 스킨케어 2kg'); 
-insert into goodsDB values (70118 ,'캐츠랑 전연령 리브레 5kg'); 
-insert into goodsDB values (70119 ,'캐츠랑 전연령 리브레 2kg'); 
-insert into goodsDB values (70120 ,'CP 클래식 캣 어덜트 씨푸드 7kg'); 
-insert into goodsDB values (70121 ,'CP 클래식 캣 어덜트 참치 7kg'); 
-insert into goodsDB values (70122 ,'CP 클래식 캣 어덜트 닭고기 7kg'); 
-insert into goodsDB values (70123 ,'세라피드 그레인프리 체중관리 2kg');
-insert into goodsDB values (70124 ,'세라피드 그레인프리 요로건강 2kg'); 
-insert into goodsDB values (70125 ,'세라피드 그레인프리 헤어볼 컨트롤 2kg'); 
-insert into goodsDB values (70126 ,'캐츠랑 맘 and 베이비 4kg'); 
-insert into goodsDB values (70127 ,'캐츠랑 맘 and 베이비 2kg'); 
-insert into goodsDB values (70128 ,'캐츠랑 어덜트 8kg'); 
-insert into goodsDB values (70129 ,'캐츠랑 어덜트 4kg'); 
-insert into goodsDB values (70130 ,'캐츠랑 어덜트 2kg'); 
-insert into goodsDB values (70131 ,'캐츠랑 키튼 8kg'); 
-insert into goodsDB values (70132 ,'캐츠랑 키튼 2kg'); 
-insert into goodsDB values (70133 ,'캐츠랑 전연령 7kg'); 
-insert into goodsDB values (70134 ,'캐츠랑 전연령 5kg'); 
-insert into goodsDB values (70135 ,'캐츠랑 전연령 2kg'); 
-insert into goodsDB values (70136 ,'도기프랜드 클라쎄밀 분유 180g'); 
-insert into goodsDB values (70137 ,'위스카스 헤어볼 닭고기와 참치 3kg'); 
-insert into goodsDB values (70138 ,'로얄캐닌 캣 인도어 7+ 1.5kg'); 
-insert into goodsDB values (70139 ,'CP 클래식 캣 키튼 1.5kg'); 
-insert into goodsDB values (70140 ,'CP 클래식 캣 어덜트 닭고기 1.5kg'); 
-insert into goodsDB values (70141 ,'CP 클래식 캣 어덜트 참치 1.5kg'); 
-insert into goodsDB values (70142 ,'CP 클래식 캣 어덜트 씨푸드 1.5kg'); 
-insert into goodsDB values (70143 ,'CP 클래식 캣 어덜트 헤어볼 1.5kg'); 
-insert into goodsDB values (70144 ,'뉴트리나 비스트로캣 키튼 2kg'); 
-insert into goodsDB values (70145 ,'뉴트리나 비스트로캣 어덜트 2kg');
-insert into goodsDB values (70146 ,'로얄캐닌 피트32 2kg'); 
-insert into goodsDB values (80201 ,'더캣츠 냥바 가다랑어살 20g 50개입'); 
-insert into goodsDB values (80202 ,'더캣츠 냥바 연어살 20g 15개입'); 
-insert into goodsDB values (80203 ,'더캣츠 냥바 가다랑어살 20g 15개입'); 
-insert into goodsDB values (80204 ,'더캣츠 냥바 미니 황태살 802g 30개입'); 
-insert into goodsDB values (80205 ,'더캣츠 냥바 황태살 20g 15개입'); 
-insert into goodsDB values (80206 ,'더캣츠 냥바 황태살 20g 50개'); 
-insert into goodsDB values (80207 ,'더캣츠 냥바 미니 연어살 802g 30개입'); 
-insert into goodsDB values (80208 ,'더캣츠 냥바 연어살 20g 50개입'); 
-insert into goodsDB values (80209 ,'더캣츠 냥바 미니 가다랑어살 802g 30개입'); 
-insert into goodsDB values (80210 ,'참좋은간식 내 아이가 빠진 닭 20g'); 
-insert into goodsDB values (80211 ,'펫루트 우리아이 건강 촉촉한 닭안심 20개입'); 
-insert into goodsDB values (80212 ,'위위 닭가슴살 오리지널 22g X 30개');
-insert into goodsDB values (80213 ,'위위 닭가슴살 가다랑어 22g X 30개'); 
-insert into goodsDB values (80214 ,'위위 닭가슴살 새우 22g X 30개'); 
-insert into goodsDB values (80215 ,'코코데이 닭가슴살 순살 20g'); 
-insert into goodsDB values (80216 ,'코코데이 닭가슴살 가쓰오부시 20g'); 
-insert into goodsDB values (80217 ,'더캣츠 그대로 미니포켓 치킨 12개입'); 
-insert into goodsDB values (80218 ,'더캣츠 그대로 미니포켓 참치 802개입'); 
-insert into goodsDB values (80219 ,'더캣츠 그대로 미니포켓 연어 802개입'); 
-insert into goodsDB values (80101 ,'비타크래프트 크리스피 크런치 몰트 60g'); 
-insert into goodsDB values (80102 ,'프레셔스 크런치 참치 and 연어 8개입'); 
-insert into goodsDB values (80103 ,'프레셔스 크런치 참치 and 닭고기 8개입'); 
-insert into goodsDB values (80104 ,'프레셔스 크런치 참치 8개입'); 
-insert into goodsDB values (80105 ,'프레셔스 고양이 크런치 참치 and 새우 8개입'); 
-insert into goodsDB values (80106 ,'냥이줄래 신묘한 참치맛 85g'); 
-insert into goodsDB values (80107 ,'냥이줄래 신묘한 치킨맛 85g'); 
-insert into goodsDB values (80108 ,'냥이줄래 신묘한 연어맛 85g'); 
-insert into goodsDB values (80109 ,'뽀로로펫 크런치캣 소고기 and 클로로필 50g'); 
-insert into goodsDB values (80110 ,'프리미요 크런치 참치 50g'); 
-insert into goodsDB values (80111 ,'프리미요 크런치 참치 and 닭고기 50g'); 
-insert into goodsDB values (80112 ,'프리미요 크런치 참치 and 새우 50g'); 
-insert into goodsDB values (80113 ,'프리미요 크런치 참치 and 연어 50g'); 
-insert into goodsDB values (80114 ,'캣츠레시피 예스파이 닭고기와 참치맛 3개입'); 
-insert into goodsDB values (80115 ,'캣츠레시피 예스파이 닭고기와 연어맛 3개입'); 
-insert into goodsDB values (80116 ,'캣츠레시피 오케이 크런치 참치와 연어맛 60g'); 
-insert into goodsDB values (80117 ,'캣츠레시피 오케이 크런치 닭고기와 연어맛 60g'); 
-insert into goodsDB values (80118 ,'캣츠레시피 오케이 크런치 닭고기와 게살맛 60g'); 
-insert into goodsDB values (80119 ,'캣츠레시피 오케이 크런치 참치맛 60g');
-insert into goodsDB values (80120 ,'캣츠레시피 오케이 크런치 닭고기맛 60g'); 
-insert into goodsDB values (80121 ,'미오 스낵 새우 50g'); 
-insert into goodsDB values (80122 ,'캐츠랑 저요저요 닭고기 60g'); 
-insert into goodsDB values (80123 ,'캐츠랑 저요저요 연어 60g'); 
-insert into goodsDB values (80124 ,'캐츠랑 저요저요 참치 60g');
-insert into goodsDB values (80125 ,'캐츠랑 저요저요 양고기 60g');
-insert into goodsDB values (80126 ,'더캣츠 쿠키 꽁냥꽁냥 북어 and 연어 100g');
-insert into goodsDB values (80127 ,'뽀로로펫 맛있는 고양이 스낵 연어 and 새우 and 닭고기 40g');
-insert into goodsDB values (80128 ,'뽀로로펫 맛있는 고양이 스낵 참치 and 페퍼민트 40g');
-insert into goodsDB values (80129 ,'뽀로로펫 맛있는 고양이 스낵 참치 and 닭고기 40g');
-insert into goodsDB values (80130 ,'비타크래프트 크리스피 크런치 덴탈 60g');
-insert into goodsDB values (80131 ,'비타크래프트 크리스피 크런치 연어 60g');
-insert into goodsDB values (80132 ,'비타크래프트 크리스피 크런치 폴트리 60g');
-insert into goodsDB values (80133 ,'비타크래프트 크리스피 크런치 오리 and 아로니아 60g');
-insert into goodsDB values (80134 ,'비타크래프트 크리스피 크런치 칠면조 치아씨드 60g');
-insert into goodsDB values (80135 ,'CP 클래식 캣트릿 참치 80g');
-insert into goodsDB values (80136 ,'CP 클래식 캣트릿 연어 80g');
-insert into goodsDB values (10 ,'브리더 발바닥 스텐식기');
-insert into goodsDB values (10 ,'굿프랜드 스텐식기');
-insert into goodsDB values (10 ,'수퍼펫 대나무 목 사각식탁 M');
-insert into goodsDB values (10 ,'수퍼펫 레인보우 식탁 화이트 M');
-insert into goodsDB values (10 ,'수퍼펫 스테인리스 심플보울 L');
-insert into goodsDB values (10 ,'수퍼펫 스테인리스 디쉬보울 L');
-insert into goodsDB values (10 ,'오션 엠보싱 스텐식기 64oz');
-insert into goodsDB values (10 ,'수퍼펫 스테인리스 심플보울 핑크 S');
-insert into goodsDB values (10 ,'수퍼펫 스테인리스 디쉬보울 핑크 S');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 베이비파우더향 15kg');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 라벤더향 15kg');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 무향 15kg');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 베이비파우더향 7kg 2개입');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 라벤더향 7kg 2개입');
-insert into goodsDB values (10 ,'유로리터 소디움 벤토나이트 무향 7kg 2개입');
-insert into goodsDB values (10 ,'한그득 아빠가뭐래? 엄마가모래! 라벤더 7L');
-insert into goodsDB values (10 ,'한그득 아빠가뭐래? 엄마가모래! 녹차 7L');
-insert into goodsDB values (10 ,'한그득 아빠가뭐래? 엄마가모래! 오리지날 7L');
-insert into goodsDB values (10 ,'뽀로로펫 모래킹 4L');
-insert into goodsDB values (10 ,'에코리에프 캣리터 벤토나이트 레몬향 8L');
-insert into goodsDB values (10 ,'카르마 킹오브샌드 벤토나이트 베이비파우더향 5L');
-insert into goodsDB values (10 ,'카르마 킹오브샌드 벤토나이트 무향 5L');
-insert into goodsDB values (10 ,'카르마 퀸오브샌드 누디 녹차 3kg');
-insert into goodsDB values (10 ,'굿프랜드 도모다찌 향모래 레몬 5L');
-insert into goodsDB values (10 ,'굿프랜드 도모다찌 모래 5L');
-insert into goodsDB values (10 ,'굿프랜드 주주 모래 5kg');
-insert into goodsDB values (10 ,'네모네모 두부모래 가는입자 오리지널 7L');
-insert into goodsDB values (10 ,'네모네모 두부모래 가는입자 녹차 7L');
-insert into goodsDB values (10 ,'네모네모 두부모래 가는입자 라벤더 7L');
-insert into goodsDB values (10 ,'더캣츠 두부니? 모래야! 오리지널 7L');
-insert into goodsDB values (10 ,'더캣츠 두부니? 모래야! 베이비파우더향 7L');
-insert into goodsDB values (10 ,'더캣츠 두부니? 모래야! 녹차향 7L');
-insert into goodsDB values (10 ,'카르마 퀸오브샌드 숯 3kg');
-insert into goodsDB values (10 ,'카르마 퀸오브샌드 녹차 3kg');
-insert into goodsDB values (10 ,'카르마 퀸오브샌드 두부 3kg');
-insert into goodsDB values (10 ,'에코 펠라인 퓨어 9.08kg');
-insert into goodsDB values (10 ,'에티펫 향기묘책 러블리 코튼향 150g');
-insert into goodsDB values (10 ,'에티펫 향기묘책 편백 숲속향 150g');
-insert into goodsDB values (10 ,'푸르미 벤티 캣 토일렛 아이보리');
-insert into goodsDB values (10 ,'푸르미 벤티 캣 토일렛 인디핑크');
-insert into goodsDB values (10 ,'푸르미 벤티 캣 토일렛 그레이');
-insert into goodsDB values (10 ,'캣리터 심플 고양이 모래삽');
-insert into goodsDB values (10 ,'푸르미 3, Door 고양이 화장실 인디핑크');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 소형 인디핑크');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 소형 라이트 그레이');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 소형 아이보리');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 소형 브라운');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 인디핑크 대형');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 라이트 그레이 대형');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 아이보리 대형');
-insert into goodsDB values (10 ,'푸르미 고양이 화장실 브라운 대형');
-insert into goodsDB values (10 ,'푸르미 3, Door 고양이 화장실 라이트 그레이');
-insert into goodsDB values (10 ,'푸르미 3, Door 고양이 화장실 민트');
-insert into goodsDB values (10 ,'푸르미 모래삽 랜덤발송)');
-insert into goodsDB values (10 ,'아이캣 고양이 화장실 브라운 레귤러');
-insert into goodsDB values (10 ,'아이캣 뚱냥이 모래매트 아이보리 점보');
-insert into goodsDB values (10 ,'도기프랜드 모래삽 랜덤발송)');
-insert into goodsDB values (10 ,'하겐 심플 변기스푼 블루');
-insert into goodsDB values (10 ,'하겐 심플 변기스푼 핑크');
-insert into goodsDB values (10 ,'하겐 심플 변기스푼 그레이');
-insert into goodsDB values (10 ,'아이캣 뚱냥이 모래매트 아이보리');
-insert into goodsDB values (10 ,'포세린 본 식기 세트 소형 2구');
-insert into goodsDB values (10 ,'포세린 본 식기 세트 대형 2구');
-insert into goodsDB values (10 ,'우쭈쭈 뉴블링 스텐식기 그린');
-insert into goodsDB values (10 ,'우쭈쭈 뉴블링 스텐식기 핑크');
-insert into goodsDB values (10 ,'우쭈쭈 뉴블링 스텐식기 블루');
-insert into goodsDB values (10 ,'우쭈쭈 리본퀄팅식기 그레이');
-insert into goodsDB values (10 ,'우쭈쭈 리본퀄팅식기 민트');
-insert into goodsDB values (10 ,'우쭈쭈 리본퀄팅식기 핑크');
-insert into goodsDB values (10 ,'굿프랜드 스텐 쌍식기 8oz');
-insert into goodsDB values (10 ,'브리더 스텐트윈식기 13cm');
-insert into goodsDB values (10 ,'수퍼펫 대나무 목 경사식탁');
-insert into goodsDB values (10 ,'수퍼펫 올리브 식탁 핑크');
-insert into goodsDB values (10 ,'수퍼펫 올리브 식탁 블랙');
-insert into goodsDB values (10 ,'수퍼펫 올리브 식탁 화이트');
-insert into goodsDB values (10 ,'수퍼펫 실리콘 클린 더블보울 인디언레드');
-insert into goodsDB values (10 ,'수퍼펫 힐링 식탁 블랙');
-insert into goodsDB values (10 ,'비아파 락톨 퍼피 250g');
-insert into goodsDB values (10 ,'아침애 수제사료 황태 1kg');
-insert into goodsDB values (10 ,'벤티 독 그레인프리 관절 5kg');
-insert into goodsDB values (10 ,'벤티 독 그레인프리 피부 5kg');
-insert into goodsDB values (10 ,'벤티 독 그레인프리 체중 중성화 1.5kg');
-insert into goodsDB values (10 ,'로얄캐닌 다이제스티브 케어 파우치 85g');
-insert into goodsDB values (10 ,'도그랑 훼미리 닭고기와 쌀 퍼피 2kg');
-insert into goodsDB values (10 ,'도그랑 패밀리 중대형견 10kg');
-insert into goodsDB values (10 ,'도그랑 브론즈 전연령 5kg');
-insert into goodsDB values (10 ,'로얄캐닌 미니 스테럴라이즈드 파우치 85g');
-insert into goodsDB values (10 ,'로얄캐닌 라이트웨이트 케어 파우치 85g');
-insert into goodsDB values (10 ,'로얄캐닌 푸들 어덜트 파우치 85g');
-insert into goodsDB values (10 ,'로얄캐닌 미니 퍼피 그레이비 파우치 85g');
-insert into goodsDB values (10 ,'도그랑 클래식 전연령 5kg');
-insert into goodsDB values (10 ,'도그랑 훼미리 닭고기와 쌀 어덜트 2kg');
-insert into goodsDB values (10 ,'아침애 수제사료 한우 800g');
-insert into goodsDB values (10 ,'아침애 수제사료 다이어트 1kg');
-insert into goodsDB values (10 ,'아침애 수제사료 피부 개선 3kg'); 
-insert into goodsDB values (10 ,'아침애 수제사료 오리 연어 감자 1kg'); 
-insert into goodsDB values (10 ,'아침애 수제사료 오리 감자 연어 3kg');
-insert into goodsDB values (10 ,'아침애 수제사료 한우 2.4kg');
-insert into goodsDB values (10 ,'소프트플러스 참좋은 황태사료 오리 1kg'); 
-insert into goodsDB values (10 ,'소프트플러스 참좋은 황태사료 연어 1kg');
-insert into goodsDB values (10 ,'CP 클래식 어덜트 스몰 브리드 소고기 2kg');
-insert into goodsDB values (10 ,'CP 클래식 퍼피 밀크 2kg');
-insert into goodsDB values (10 ,'CP 클래식 독 어덜트 양고기 2kg');
-insert into goodsDB values (10 ,'CP 클래식 독 어덜트 닭고기 2kg');
-insert into goodsDB values (10 ,'CP 클래식 독 어덜트 소고기 2kg');
-insert into goodsDB values (10 ,'뉴트리나 다이어트 2.1kg');
-insert into goodsDB values (10 ,'뉴트리나 어덜트 연어 2.1kg');
-insert into goodsDB values (10 ,'뉴트리나 퍼피 2.1kg');
-insert into goodsDB values (10 ,'디럭스락 분유 200g');
-insert into goodsDB values (10 ,'데이스포 초유분유 200g');
-insert into goodsDB values (10 ,'굿프랜드 철장 걸이식기 20oz');
-insert into goodsDB values (10 ,'굿프랜드 철장 걸이식기 30oz');
-insert into goodsDB values (10 ,'요기쏘 반려동물 사료 보관함 2kg');
-insert into goodsDB values (10 ,'리플랜디시 정수 필터 3개입');
-insert into goodsDB values (10 ,'펫블랑 기저귀 남아용 대형 12매'); 
-insert into goodsDB values (10 ,'펫블랑 기저귀 남아용 중형 12매');
-insert into goodsDB values (10 ,'펫블랑 기저귀 남아용 소형 12매');
-insert into goodsDB values (10 ,'펫블랑 기저귀 여아용 대형 12매'); 
-insert into goodsDB values (10 ,'펫블랑 기저귀 여아용 중형 12매');
-insert into goodsDB values (10 ,'펫블랑 기저귀 여아용 소형 12매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 여아용 5단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 여아용 2단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 남여공용 1단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 남아용 3단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 남아용 2단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 남아용 1단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 여아용 4단계 10매');
-insert into goodsDB values (10 ,'요요쉬 애견 기저귀 여아용 3단계 10매');
-insert into goodsDB values (10 ,'아몬스 애견기저귀 초소형견용 10매');
-insert into goodsDB values (10 ,'아몬스 애견기저귀 소형견용 10매');
-insert into goodsDB values (10 ,'아몬스 애견기저귀 중형견용 10매');
-insert into goodsDB values (10 ,'아몬스 수컷용 애견기저귀 초소형견 10매');
-insert into goodsDB values (10 ,'아몬스 수컷용 애견기저귀 소형견 10매');
-insert into goodsDB values (10 ,'아몬스 수컷용 애견기저귀 중형견 10매');
-insert into goodsDB values (10 ,'탐사 실속형 배변패드,100매,6개');
-insert into goodsDB values (10 ,'한입먹개 오리 스틱 300g');
-insert into goodsDB values (10 ,'한입먹개 오리 큐브 300g');
-insert into goodsDB values (10 ,'한입먹개 오리 스테이크 300g');
-insert into goodsDB values (10 ,'한입먹개 소고기 스틱 300g');
-insert into goodsDB values (10 ,'한입먹개 소고기 큐브 300g');
-insert into goodsDB values (10 ,'한입먹개 소고기 스테이크 300g');
-insert into goodsDB values (10 ,'퓨어밥 연어 큐브 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 고구마치킨 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 소고기 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 치킨 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 오리 300g');
-insert into goodsDB values (10 ,'착한간식 소고기 스테이크 300g');
-insert into goodsDB values (10 ,'착한간식 소고기 슬라이스 300g');
-insert into goodsDB values (10 ,'한간식 소고기 큐브 300g');
-insert into goodsDB values (10 ,'뉴트리오 소고기 연골 큐블 300g');
-insert into goodsDB values (10 ,'뉴트리오 치킨 연골 큐블 300g');
-insert into goodsDB values (10 ,'펫스토랑 오리 스테이크 300g');
-insert into goodsDB values (10 ,'펫스토랑 오리 스테이크 혼합 300g');
-insert into goodsDB values (10 ,'펫스토랑 소고기 스테이크 큐브 300g');
-insert into goodsDB values (10 ,'펫스토랑 소고기 스테이크 슬라이스 300g');
-insert into goodsDB values (10 ,'아르테미스 제스퍼 져키 양고기 400g');
-insert into goodsDB values (10 ,'뉴트리오 오리 연골 큐블 300g');
-insert into goodsDB values (10 ,'뉴트리오 오리 연골 스테이크 300g');
-insert into goodsDB values (10 ,'뉴트리오 치킨 연골 스테이크 300g');
-insert into goodsDB values (10 ,'뉴트리오 소고기 연골 스테이크 300g');
-insert into goodsDB values (10 ,'뉴트리오 홍삼 오리 큐블 300g');
-insert into goodsDB values (10 ,'뉴트리오 홍삼 치킨 큐블 300g');
-insert into goodsDB values (10 ,'메가미트 치킨 윙 1kg');
-insert into goodsDB values (10 ,'메가미트 치킨 고구마 1kg');
-insert into goodsDB values (10 ,'메가미트 치킨 비스켓 1kg');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 치킨 라이스 큐브 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 치킨 고구마 라이스 스틱 300g');
-insert into goodsDB values (10 ,'메가미트 치킨 빼빼로 1kg');
-insert into goodsDB values (10 ,'메가미트 오리 윙 1kg');
-insert into goodsDB values (10 ,'메가미트 오리 고구마 1kg');
-insert into goodsDB values (10 ,'메가미트 오리 우유스틱 1kg');
-insert into goodsDB values (10 ,'메가미트 오리 비스켓 1kg');
-insert into goodsDB values (10 ,'메가미트 오리 빼빼로 1kg');
-insert into goodsDB values (10 ,'메가미트 소고기 스테이크 슬라이스 1kg');
-insert into goodsDB values (10 ,'메가미트 소고기 스테이크 큐브 1kg');
-insert into goodsDB values (10 ,'메가미트 소고기 스테이크 스틱 1kg');
-insert into goodsDB values (10 ,'메가미트 소고기 스테이크 덤벨 1kg');
-insert into goodsDB values (10 ,'메가미트 칠면조 스테이크 덤벨 1kg');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 오리 라이스 스틱 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 소고기 라이스 큐브 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 연어 라이스 큐브 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 오리 라이스 큐브 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 치킨 고구마 라이스 큐브 300g');
-insert into goodsDB values (10 ,'펫스토랑 황태 스테이크 300g');
-insert into goodsDB values (10 ,'펫스토랑 황태 스테이크 혼합 300g');
-insert into goodsDB values (10 ,'펫스토랑 황태 스테이크 큐브 300g');
-insert into goodsDB values (10 ,'펫스토랑 황태 스테이크 슬라이스 300g');
-insert into goodsDB values (10 ,'펫스토랑 오리 스테이크 큐브 300g');
-insert into goodsDB values (10 ,'펫스토랑 연어 스테이크 300g');
-insert into goodsDB values (10 ,'펫스토랑 연어 스테이크 혼합 300g');
-insert into goodsDB values (10 ,'펫스토랑 연어 스테이크 큐브 300g');
-insert into goodsDB values (10 ,'펫스토랑 연어 스테이크 슬라이스 300g');
-insert into goodsDB values (10 ,'펫스토랑 소고기 스테이크 300g');
-insert into goodsDB values (10 ,'펫스토랑 소고기 스테이크 혼합 300g');
-insert into goodsDB values (10 ,'아르테미스 제스퍼 저키 칠면조 400g');
-insert into goodsDB values (10 ,'아르테미스 제스퍼 져키 오리고기 400g');
-insert into goodsDB values (10 ,' 제스퍼 져키 양고기 400g');
-insert into goodsDB values (10 ,'아르테미스 제스퍼 져키 연어 400g');
-insert into goodsDB values (10 ,'아르테미스 제스퍼 져키 닭고기 400g');
-insert into goodsDB values (10 ,'뉴트리오 오리 돈까스 400g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 소고기 라이스 스틱 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 연어 라이스 스틱 300g');
-insert into goodsDB values (10 ,'참좋은간식 쫀득쫀득 져키 치킨 라이스 스틱 300g');
-insert into goodsDB values (10 ,'퓨어밥 오리 큐브 300g');
-insert into goodsDB values (10 ,'퓨어밥 오리 슬라이스 300g');
-insert into goodsDB values (10 ,'퓨어밥 오리 스테이크 300g');
-insert into goodsDB values (10 ,'퓨어밥 연어 슬라이스 300g');
-insert into goodsDB values (10 ,'메가미트 연어 스테이크 슬라이스 1kg');
-insert into goodsDB values (10 ,'메가미트 연어 스테이크 큐브 1kg');
-insert into goodsDB values (10 ,'메가미트 연어 스테이크 스틱 1kg');
-insert into goodsDB values (10 ,'메가미트 연어 스테이크 덤벨 1kg');
-insert into goodsDB values (10 ,'메가미트 칠면조 스테이크 슬라이스 1kg');
-insert into goodsDB values (10 ,'메가미트 칠면조 스테이크 큐브 1kg');
-insert into goodsDB values (10 ,'메가미트 칠면조 스테이크 스틱 1kg');
-insert into goodsDB values (10 ,'착한간식 치킨쌀스틱 300g');
-insert into goodsDB values (10 ,'펫스토랑 오리 스테이크 슬라이스 300g');
-insert into goodsDB values (10 ,'도그피앙 소고기 and 치즈 100g');
-insert into goodsDB values (10 ,'도그피앙 소고기 100g');
-insert into goodsDB values (10 ,'도그피앙 양고기 100g');
-insert into goodsDB values (10 ,'도그피앙 연어 100g');
-insert into goodsDB values (10 ,'도그피앙 오리고기 100g');
-insert into goodsDB values (10 ,'도그피앙 닭고기 100g');
-insert into goodsDB values (10 ,'비타크래프트 조에시 하트캔 치킨 and 당근 and 완두콩 85g');
-insert into goodsDB values (10 ,'비타크래프트 조에시 하트캔 칠면조 and 당근 85g');
-insert into goodsDB values (10 ,'비타크래프트 조에시 하트캔 오리 and 시금치 85g');
-insert into goodsDB values (10 ,'비타크래프트 조에시 하트캔 오리 and 배 85g');
-insert into goodsDB values (10 ,'헬로도기 오리고기 캔 400g');
-insert into goodsDB values (10 ,'헬로도기 양고기 캔 400g');
-insert into goodsDB values (10 ,'헬로도기 소고기 캔 400g');
-insert into goodsDB values (10 ,'헬로도기 닭고기 캔 400g');
-insert into goodsDB values (10 ,'내츄럴독 청크 닭고기 375g');
-insert into goodsDB values (10 ,'내츄럴독 청크 소고기 375g');
-insert into goodsDB values (10 ,'내츄럴독 청크 양고기 375g');
-insert into goodsDB values (10 ,'러브썸 독 양고기 캔 85g');
-insert into goodsDB values (10 ,'러브썸 독 소고기 캔 85g');
-insert into goodsDB values (10 ,'러브썸 독 닭고기 캔 85g');
-insert into goodsDB values (10 ,'구루머스 독 램 and 치킨 100g');
-insert into goodsDB values (10 ,'구루머스 독 비프 and 치킨 100g');
-insert into goodsDB values (10 ,'구루머스 독 치킨 100g');
-insert into goodsDB values (10 ,'구루머스 독 오리 100g');
-insert into goodsDB values (10 ,'베게브랜드 사각 닭고기 캔 100g');
-insert into goodsDB values (10 ,'베게브랜드 사각 오리고기 캔 100g');
-insert into goodsDB values (10 ,'베게브랜드 사각 양고기 캔 100g');
-insert into goodsDB values (10 ,'베게브랜드 사각 소고기 캔 100g');
-insert into goodsDB values (10 ,'럭셔리독 소고기 100g');
-insert into goodsDB values (10 ,'럭셔리독 닭고기 100g');
-insert into goodsDB values (10 ,'럭셔리독 양고기 100g');
-insert into goodsDB values (10 ,'럭셔리독 소고기와 닭고기 100g');
-insert into goodsDB values (10 ,'럭셔리독 소고기와 치즈 100g');
-insert into goodsDB values (10 ,'럭셔리독 소고기 375g');
-insert into goodsDB values (10 ,'럭셔리독 닭고기 375g');
-insert into goodsDB values (10 ,'럭셔리독 양고기 375g');
-insert into goodsDB values (10 ,'아리아스 닭고기 사각캔 100g');
-insert into goodsDB values (10 ,'아리아스 오리고기 사각캔 100g');
-insert into goodsDB values (10 ,'아리아스 칠면조 and 닭고기 사각캔 100g');
-insert into goodsDB values (10 ,'아리아스 칠면조 and 생선 사각캔 100g');
-insert into goodsDB values (10 ,'럭셔리발란스 주식캔 양고기 380g');
-insert into goodsDB values (10 ,'럭셔리발란스 주식캔 닭고기 380g');
-insert into goodsDB values (10 ,'럭셔리발란스 주식캔 소고기 380g');
-insert into goodsDB values (10 ,'뉴트리오 닭고기 and 게살 100g');
-insert into goodsDB values (10 ,'뉴트리오 닭고기 100g');
-insert into goodsDB values (10 ,'뉴트리오 닭고기 and 소고기 100g');
-insert into goodsDB values (10 ,'뉴트리오 닭고기 and 쌀 100g');
-insert into goodsDB values (10 ,'뉴트리오 닭고기 and 새우 100g');
-insert into goodsDB values (10 ,'굿프랜드 스페셜서퍼 소고기 285g');
-insert into goodsDB values (10 ,'굿프랜드 스페셜서퍼 양고기 285g');
-insert into goodsDB values (10 ,'굿프랜드 독 닭고기 and 쌀 캔 100g');
-insert into goodsDB values (10 ,'굿프랜드 독 닭고기 and 소고기 캔 100g');
-insert into goodsDB values (10 ,'굿프랜드 독 닭고기 캔 100g');
-insert into goodsDB values (10 ,'굿프랜드 독 닭고기 and 야채 캔 100g');
-insert into goodsDB values (10 ,'굿프랜드 독 닭고기 and 새우 캔 100g');
-insert into goodsDB values (10 ,'츄렙 딩고껌 연어 10.5인치 2개입');
-insert into goodsDB values (10 ,'츄렙 딩고껌 연어 7.5인치 2개입');
-insert into goodsDB values (10 ,'츄렙 딩고껌 연어 4.5인치 5개입');
-insert into goodsDB values (10 ,'츄렙 딩고껌 연어 2.5인치 13개입');
-insert into goodsDB values (10 ,'츄렙 스틱껌 연어 15개입');
-insert into goodsDB values (10 ,'인벳 츄잉본 민트 100g');
-insert into goodsDB values (10 ,'아임펫 덴탈케어 껌 닭고기 80g');
-insert into goodsDB values (10 ,'아임펫 덴탈케어 껌 소고기 80g');
-insert into goodsDB values (10 ,'아임펫 덴탈케어 껌 오리고기 80g');
-insert into goodsDB values (10 ,'앱솔루트 수제간식 닭갈비 6개입');
-insert into goodsDB values (10 ,'뉴트리오 오리고기 스틱 400g');
-insert into goodsDB values (10 ,'퍼피프랜드 이거미츄 연어 스테이크 껌 16개입');
-insert into goodsDB values (10 ,'퍼피프랜드 이거미츄 연어 스테이크 껌 3개입');
-insert into goodsDB values (10 ,'퍼피프랜드 이거미츄 소고기 스테이크 껌 24개입');
-insert into goodsDB values (10 ,'퍼피프랜드 이거미츄 소고기 스테이크 껌 16개입');
-insert into goodsDB values (10 ,'퍼피프랜드 이거미츄 소고기 스테이크 껌 3개입');
-insert into goodsDB values (10 ,'브리더랩 황태츄 본 M 1개입');
-insert into goodsDB values (10 ,'브리더랩 황태츄 본 S 1개입');
-insert into goodsDB values (10 ,'브리더랩 황태츄 링 M 1개입');
-insert into goodsDB values (10 ,'브리더랩 황태츄 링 S 1개입');
-insert into goodsDB values (10 ,'브리더랩 제로팩 말랑 치즈 황태껌 100g');
-insert into goodsDB values (10 ,'브리더랩 제로팩 말랑 황태껌 100g');
-insert into goodsDB values (10 ,'스위트키스 양치껌 청사과 100g');
-insert into goodsDB values (10 ,'스위트키스 양치껌 바나나 100g');
-insert into goodsDB values (10 ,'츄렙 딩고껌 소고기 7.5인치 2개입');
-insert into goodsDB values (10 ,'츄렙 딩고껌 소고기 4.5인치 5개입');
-insert into goodsDB values (10 ,'우프우프 슈퍼노트 6개입');
-insert into goodsDB values (10 ,'우프우프 울트라트위스트 3개입');
-insert into goodsDB values (10 ,'수제 핫도그 황태 100g');
-insert into goodsDB values (10 ,'수제 핫도그 연어 100g');
-insert into goodsDB values (10 ,'수제 핫도그 오리고기 100g');
-insert into goodsDB values (10 ,'수제 핫도그 소고기 100g');
-insert into goodsDB values (10 ,'수제 핫도그 닭고기 100g');
-insert into goodsDB values (10 ,'수제 핫도그 양고기 100g');
-insert into goodsDB values (10 ,'수제 핫도그 군고구마 100g');
-insert into goodsDB values (10 ,'뉴트리오 칠면조 힘줄 나티드본 M 6개입');
-insert into goodsDB values (10 ,'뉴트리오 칠면조 힘줄 나티드본 S 10개입');
-insert into goodsDB values (10 ,'브리더랩 럭키덴탈 아이브라이트 100g');
-insert into goodsDB values (10 ,'브리더랩 럭키덴탈 조인트 100g');
-insert into goodsDB values (10 ,'참좋은간식 멍빼로 치킨간 12개입');
-insert into goodsDB values (10 ,'참좋은간식 멍빼로 스트로베리 12개입');
-insert into goodsDB values (10 ,'참좋은간식 멍빼로 클로렐라 12개입');
-insert into goodsDB values (10 ,'참좋은간식 멍빼로 블루베리 12개입');
-insert into goodsDB values (10 ,'더내추럴 퍼니츄 위드터키 링 S');
-insert into goodsDB values (10 ,'참좋은간식 스트레스 리스 스트립스낵 소고기 30개입');
-insert into goodsDB values (10 ,'참좋은간식 스트레스 리스 트위스트 스틱 연어 8개입');
-insert into goodsDB values (10 ,'참좋은간식 스트레스 리스 트위스트 스틱 소고기 8개입');
-insert into goodsDB values (10 ,'참좋은간식 스트레스 리스 트위스트 스틱 오리고기 8개입');
-insert into goodsDB values (10 ,'참좋은간식 스트레스 리스 트위스트 스틱 닭고기 8개입');
-insert into goodsDB values (10 ,'핑거푸드 닭고기 핫도그 120g');
-insert into goodsDB values (10 ,'핑거푸드 오리고기 핫도그 120g');
-insert into goodsDB values (10 ,'핑거푸드 양고기 핫도그 120g');
-insert into goodsDB values (10 ,'스마트본 트위스트 스틱 피넛 50개입');
-insert into goodsDB values (10 ,'내추럴EX 소고기츄 S 1개입');
-insert into goodsDB values (10 ,'참좋은간식 하얀소세지 북어 20개입');
-insert into goodsDB values (10 ,'참좋은간식 하얀소세지 소고기 20개입');
-insert into goodsDB values (10 ,'수제 핫도그 옥수수 100g');
-insert into goodsDB values (10 ,'메타멍스 장 건강 5개입');
-insert into goodsDB values (10 ,'메타멍스 눈 건강 5개입');
-insert into goodsDB values (10 ,'메타멍스 체중 유지 5개입');
-insert into goodsDB values (10 ,'메타멍스 면역력 건강 5개입');
-insert into goodsDB values (10 ,'메타멍스 관절 건강 5개입');
-insert into goodsDB values (10 ,'바우와우 체다 치즈볼 100g');
-insert into goodsDB values (10 ,'바우와우 치킨 치즈롤 120g');
-insert into goodsDB values (10 ,'바우와우 혼합간식 150g');
-insert into goodsDB values (10 ,'바우와우 임실 모짜렐라 치즈 스틱 70g');
-insert into goodsDB values (10 ,'바우와우 당근 치즈볼 100g');
-insert into goodsDB values (10 ,'바우와우 연어 치즈롤 120g');
-insert into goodsDB values (10 ,'참좋은간식 삼계죽 80g');
-insert into goodsDB values (10 ,'참좋은간식 삼계 북어죽 80g');
-insert into goodsDB values (10 ,'순우리 혼합간식 100g');
-insert into goodsDB values (10 ,'퍼피아이 시니어 소프트 황태 소프트 너겟 80g');
-insert into goodsDB values (10 ,'퍼피아이 시니어 소프트 눈 영양롤 100g');
-insert into goodsDB values (10 ,'퍼피아이 시니어 소프트 관절 영양롤 100g');
-insert into goodsDB values (10 ,'퍼피아이 시니어 소프트 고구마 스틱 100g');
-insert into goodsDB values (10 ,'참좋은간식 길개먹개 연어 2개입');
-insert into goodsDB values (10 ,'참좋은간식 길개먹개 소고기 2개입');
-insert into goodsDB values (10 ,'참좋은간식 길개먹개 오리고기 2개입');
-insert into goodsDB values (10 ,'참좋은간식 길개먹개 닭고기 2개입');
-insert into goodsDB values (10 ,'코코데이 닭가슴살 게살 20g');
-insert into goodsDB values (10 ,'참좋은간식 하얀소세지 연어 20개입');
-insert into goodsDB values (10 ,'참좋은간식 하얀소세지 치킨치즈 20개입');
-insert into goodsDB values (10 ,'수제 닭꼬치 90g');
-insert into goodsDB values (10 ,'수제 양꼬치 90g');
-insert into goodsDB values (10 ,'수제 연어꼬치 90g');
-insert into goodsDB values (10 ,'수제 오리꼬치 90g');
-insert into goodsDB values (10 ,'수제 소고기 꼬치 90g');
-insert into goodsDB values (10 ,'설레개 치킨 20개입');
-insert into goodsDB values (10 ,'설레개 치킨 1개입');
-insert into goodsDB values (10 ,'설레개 소고기 20개입');
-insert into goodsDB values (10 ,'설레개 소고기 1개입');
-insert into goodsDB values (10 ,'설레개 양고기 20개입');
-insert into goodsDB values (10 ,'설레개 양고기 1개입');
-insert into goodsDB values (10 ,'레개 연어 20개입');
-insert into goodsDB values (10 ,'설레개 연어 1개입');
-insert into goodsDB values (10 ,'참좋은간식 소울대 and 연어 20g');
-insert into goodsDB values (10 ,'뉴트리오 소울대 and 닭고기 140g');
-insert into goodsDB values (10 ,'오리사랑 오리덤벨 400g');
-insert into goodsDB values (10 ,'굿프랜드 슬라이스사사미 60g');
-insert into goodsDB values (10 ,'오리가쿵 맛있는 큐브 200g');
-insert into goodsDB values (10 ,'극상소재 맛집 닭고기 200g');
-insert into goodsDB values (10 ,'극상소재 맛집 소고기 200g');
-insert into goodsDB values (10 ,'극상소재 맛집 양고기 200g');
-insert into goodsDB values (10 ,'극상소재 맛집 황태 200g');
-insert into goodsDB values (10 ,'브리더랩 제로팩 샌드 치킨 and 황태 100g');
-insert into goodsDB values (10 ,'브리더랩 제로팩 샌드 소고기 and 황태 100g');
-insert into goodsDB values (10 ,'브리더랩 제로팩 샌드 오리 and 황태 100g');
-insert into goodsDB values (10 ,'브리더랩 제로팩 샌드 연어 and 황태 100g');
-insert into goodsDB values (10 ,'펫러닝 갬성버거 오리고기 치즈 100g');
-insert into goodsDB values (10 ,'펫러닝 갬성버거 소고기 치즈 100g');
-insert into goodsDB values (10 ,'참좋은간식 고구마 치즈 연어봉 100g');
-insert into goodsDB values (10 ,'참좋은간식 고구마 치즈 오리봉 100g');
-insert into goodsDB values (10 ,'참좋은간식 고구마 치즈 치킨말이 100g');
-insert into goodsDB values (10 ,'아침애 연어버거 100g');
-insert into goodsDB values (10 ,'아침애 오리버거 100g');
-insert into goodsDB values (10 ,'좋은친구들 소고기 스테이크 50g');
-insert into goodsDB values (10 ,'좋은친구들 참치 스테이크 50g');
-insert into goodsDB values (10 ,'좋은친구들 연어 스테이크 50g');
-insert into goodsDB values (10 ,'개이득 혼합 스몰 바이트 200g');
-insert into goodsDB values (10 ,'참좋은간식 소울대 and 참치 20g');
-insert into goodsDB values (10 ,'뉴트리오 오리 북어 말이 180g');
-insert into goodsDB values (10 ,'개꿀 소고기 져키 70g');
-insert into goodsDB values (10 ,'연어가쿵 맛있는 큐브 200g');
-insert into goodsDB values (10 ,'개이득 오리 큐브 200g');
-insert into goodsDB values (10 ,'개이득 오리 슬라이스 200g');
-insert into goodsDB values (10 ,'개이득 연어 큐브 200g');
-insert into goodsDB values (10 ,'개이득 연어 슬라이스 200g');
-insert into goodsDB values (10 ,'개이득 소 큐브 200g');
-insert into goodsDB values (10 ,'개이득 소 슬라이스 200g');
-insert into goodsDB values (10 ,'바우와우 치킨져키 150g');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 오리 and 북어 4개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 연어 and 북어 4개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 소 and 북어 4개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 치킨 and 북어 1개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 연어 and 북어 1개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 소 and 북어 1개입');
-insert into goodsDB values (10 ,'참좋은간식 꼬치꼬치 치킨 and 북어 4개입');
-insert into goodsDB values (10 ,'참좋은간식 버팔로 치킨츄 본 S 5개입');
-insert into goodsDB values (10 ,'참좋은간식 치킨 연어 호박 큐브 100g');
-insert into goodsDB values (10 ,'참좋은간식 치킨 연어 브로콜리 큐브 100g');
-insert into goodsDB values (10 ,'참좋은간식 치킨 연어 당근 큐브 100g');
-insert into goodsDB values (10 ,'뉴트리오 닭 북어 말이 180g');
-insert into goodsDB values (10 ,'뉴트리오 소울대 and 오리고기 140g');
-insert into goodsDB values (10 ,'뉴트리오 소울대 and 소고기 140g');
-insert into goodsDB values (10 ,'개꿀 오리고기 져키 70g');
-insert into goodsDB values (10 ,'브리더랩 믹스쿵 스몰바이트');
-insert into goodsDB values (10 ,'오리사랑 오리고구마 400g');
-insert into goodsDB values (10 ,'오리사랑 오리슬라이스 400g');
-insert into goodsDB values (10 ,'오리가쿵 맛있는 슬라이스 200g');
-insert into goodsDB values (10 ,'연어가쿵 맛있는 슬라이스 200g');
-insert into goodsDB values (10 ,'소가쿵 맛있는 큐브 200g');
-insert into goodsDB values (10 ,'팔팔스틱 눈 30개입');
-insert into goodsDB values (10 ,'팔팔스틱 멀티 30개입');
-insert into goodsDB values (10 ,'버박 뉴트리 플러스겔 종합영양제 120.5g');
-insert into goodsDB values (10 ,'뉴트리플러스젠 키토산 영양제 120g');
-insert into goodsDB values (10 ,'펫슐랭 컨텍트 아이즈 180g');
-insert into goodsDB values (10 ,'데이스포 에이치 시리즈 종합영양제 250g');
-insert into goodsDB values (10 ,'뉴트리플러스젠 오메가3 120g');
-insert into goodsDB values (10 ,'뉴트리플러스젠 병후회복 체력증진 홍삼 120g');
-insert into goodsDB values (10 ,'뉴트리플러스젠 종합영양제 성견용 비타민파워 120g');
-insert into goodsDB values (10 ,'뉴트리플러스젠 종합영양제 퍼피 베이직 120g');
-insert into goodsDB values (10 ,'프로이젠 종합 비타민 영양제 30개입');
+ALTER TABLE review
+    ADD CONSTRAINT review_userdb_fk FOREIGN KEY ( userdb_userid )
+        REFERENCES userdb ( userid );

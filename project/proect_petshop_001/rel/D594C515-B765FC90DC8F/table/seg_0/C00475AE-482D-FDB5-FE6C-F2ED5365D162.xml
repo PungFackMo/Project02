@@ -28,24 +28,9 @@
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>200</dataTypeSize>
-<ownDataTypeParameters>200,,</ownDataTypeParameters>
+<dataTypeSize>40 BYTE</dataTypeSize>
+<ownDataTypeParameters>40 BYTE,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
-</Column>
-<Column name="goodsDB_goodsid" id="319B639B-0D44-4309-83F0-D34C25DF0D11">
-<createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 06:15:15 UTC</createdTime>
-<commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
-<ownerDesignName>proect_petshop_001</ownerDesignName>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT019</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<previousColumn>false</previousColumn>
-<autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="22DB77F3-7582-B20E-E5F6-BBA91F29EC14" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
-</associations>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -58,16 +43,6 @@
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
 <colUsage columnID="245E30E5-FEFE-389A-D2A0-287B7B9FF30C"/>
-</indexColumnUsage>
-</ind_PK_UK>
-<ind_PK_UK id="B42F4CAA-7506-8046-5FD4-B7E57583634E" name="category_goodsDB_FK">
-<createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 06:15:15 UTC</createdTime>
-<ownerDesignName>proect_petshop_001</ownerDesignName>
-<indexState>Foreign Key</indexState>
-<isSurrogateKey>false</isSurrogateKey>
-<indexColumnUsage>
-<colUsage columnID="319B639B-0D44-4309-83F0-D34C25DF0D11"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

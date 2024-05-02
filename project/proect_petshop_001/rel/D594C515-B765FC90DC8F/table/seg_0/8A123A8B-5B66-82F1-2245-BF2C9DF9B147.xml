@@ -19,23 +19,12 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="orderdate" id="E4B078B4-EA5E-16BF-8100-891DA5B4CFED">
-<createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 05:33:00 UTC</createdTime>
-<commentInRDBMS><![CDATA[주문날짜]]></commentInRDBMS>
-<ownerDesignName>proect_petshop_001</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT007</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-<autoIncrementCycle>false</autoIncrementCycle>
-</Column>
 <Column name="userDB_userid" id="2FE18867-6C80-B801-D345-3E7F2DD78133">
 <createdBy>ITPS</createdBy>
 <createdTime>2024-04-30 05:33:07 UTC</createdTime>
 <commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
@@ -60,6 +49,76 @@
 <associations>
 <colAssociation fkAssociation="F0BF61CF-C1BC-DEA7-655C-EE9BF04FF4C8" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
 </associations>
+</Column>
+<Column name="orderdate" id="E4B078B4-EA5E-16BF-8100-891DA5B4CFED">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:33:00 UTC</createdTime>
+<commentInRDBMS><![CDATA[주문날짜]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="address_num" id="6D6FCADA-8BF9-0FC5-015D-BF3979F09374">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:42:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[우편번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10 BYTE</dataTypeSize>
+<ownDataTypeParameters>10 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="address" id="706324E2-E49B-2318-526E-BEF77A1930E7">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:42:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[주소]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>150 BYTE</dataTypeSize>
+<ownDataTypeParameters>150 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="detail_address" id="941F2111-D468-3CE9-D4B3-604871534CB0">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:42:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[상세주소]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>50 BYTE</dataTypeSize>
+<ownDataTypeParameters>50 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="phone" id="C6A3635C-DBAE-3F94-90A0-2FD0AFBA621E">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:43:08 UTC</createdTime>
+<commentInRDBMS><![CDATA[전화번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>26 BYTE</dataTypeSize>
+<ownDataTypeParameters>26 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="total_price" id="8CD25DA9-7310-B72B-9800-4CB905F81500">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:43:08 UTC</createdTime>
+<commentInRDBMS><![CDATA[총 주문금액]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">

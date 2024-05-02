@@ -8,12 +8,11 @@
 <existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
 <parsed>true</parsed>
 <columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
-<Column name="goodscnt" id="5503E20D-018B-F5DD-02E0-FDA040C1B59D">
+<Column name="basket_id" id="CCDC775E-8933-9BFC-C5D1-67268538EC79">
 <createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 05:36:28 UTC</createdTime>
-<commentInRDBMS><![CDATA[상품갯수]]></commentInRDBMS>
+<createdTime>2024-05-02 00:30:31 UTC</createdTime>
+<commentInRDBMS><![CDATA[장바구니ID]]></commentInRDBMS>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
-<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
@@ -25,6 +24,7 @@
 <createdTime>2024-04-30 05:36:34 UTC</createdTime>
 <commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
@@ -40,6 +40,7 @@
 <createdTime>2024-04-30 05:36:44 UTC</createdTime>
 <commentInRDBMS><![CDATA[상품번호]]></commentInRDBMS>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT019</logicalDatatype>
@@ -50,8 +51,31 @@
 <colAssociation fkAssociation="14A9BD80-2BFB-DC7C-4828-D69ED38F06DB" referredColumn="1D85F616-B52F-5534-74BC-84D50D95705F"/>
 </associations>
 </Column>
+<Column name="goodscnt" id="5503E20D-018B-F5DD-02E0-FDA040C1B59D">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-04-30 05:36:28 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품갯수]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9E235DEA-C2DF-084E-66A7-D05177D44364" name="basket_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:30:31 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="CCDC775E-8933-9BFC-C5D1-67268538EC79"/>
+</indexColumnUsage>
+</ind_PK_UK>
 <ind_PK_UK id="6EBBF745-8C41-FC02-5202-AA2F2E06B7D2" name="basket_userDB_FK">
 <createdBy>ITPS</createdBy>
 <createdTime>2024-04-30 05:36:34 UTC</createdTime>

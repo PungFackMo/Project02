@@ -8,7 +8,7 @@
 <referredTableID>C7851DC8-A523-7A0F-17BC-A05D8E9EF7C7</referredTableID>
 <keyObject>51CB527B-E53D-C993-F90A-4D63E374CD17</keyObject>
 <referredKeyID>51CB527B-E53D-C993-F90A-4D63E374CD17</referredKeyID>
-<mandatory>true</mandatory>
+<mandatory>false</mandatory>
 <refColNames>userid</refColNames>
 <transferable>true</transferable>
 <rely>false</rely>

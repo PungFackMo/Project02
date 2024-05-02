@@ -19,21 +19,68 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
 </Column>
-<Column name="goodsDB_price_goodsname" id="2507C8EC-47CA-8D88-E21F-2FDBE2634070">
+<Column name="category_categoryID" id="CD0F0FD8-3AD1-7F9D-57D6-00F9EBBD3595">
 <createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 05:46:40 UTC</createdTime>
+<createdTime>2024-05-02 00:25:57 UTC</createdTime>
+<commentInRDBMS><![CDATA[카테고리번호
+]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="2635B52C-6A73-A743-92A9-A78DB4AD3003" referredColumn="245E30E5-FEFE-389A-D2A0-287B7B9FF30C"/>
+</associations>
+</Column>
+<Column name="goods_name" id="EC496C41-CA4A-AE95-1BF2-E11FED3788D8">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:27:41 UTC</createdTime>
 <commentInRDBMS><![CDATA[상품명]]></commentInRDBMS>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT024</logicalDatatype>
-<dataTypeSize>2000</dataTypeSize>
-<ownDataTypeParameters>2000,,</ownDataTypeParameters>
-<previousColumn>false</previousColumn>
+<dataTypeSize>200 BYTE</dataTypeSize>
+<ownDataTypeParameters>200 BYTE,,</ownDataTypeParameters>
 <autoIncrementCycle>false</autoIncrementCycle>
-<associations>
-<colAssociation fkAssociation="8FF8D966-BA24-6C7F-691D-90410FE4232C" referredColumn="61AB20FC-A08A-F2DB-D4C4-26DF5A9D2647"/>
-</associations>
+</Column>
+<Column name="goods_price" id="45CFE0D7-397D-8D3A-5720-700ECC29CE05">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:29:31 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품가격]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="goods_info" id="32F642A0-EFEA-A33D-8DC2-A1D9CD77EE1F">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:28:18 UTC</createdTime>
+<commentInRDBMS><![CDATA[상품 설명]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>4000 BYTE</dataTypeSize>
+<ownDataTypeParameters>4000 BYTE,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="goods_stock" id="7148D0FC-8D7D-1448-31B4-1F5CDCFE16EE">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:28:51 UTC</createdTime>
+<commentInRDBMS><![CDATA[재고 수량]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
 </Column>
 </columns>
 <indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
@@ -48,14 +95,14 @@
 <colUsage columnID="1D85F616-B52F-5534-74BC-84D50D95705F"/>
 </indexColumnUsage>
 </ind_PK_UK>
-<ind_PK_UK id="1413443B-0077-A8D6-41DF-825F7DA9FB54" name="goodsDB_goodsDB_price_FK">
+<ind_PK_UK id="42414732-F635-024C-9A6C-D9B0650F80B6" name="goodsDB_category_FK">
 <createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 05:46:40 UTC</createdTime>
+<createdTime>2024-05-02 00:25:57 UTC</createdTime>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
 <indexState>Foreign Key</indexState>
 <isSurrogateKey>false</isSurrogateKey>
 <indexColumnUsage>
-<colUsage columnID="2507C8EC-47CA-8D88-E21F-2FDBE2634070"/>
+<colUsage columnID="CD0F0FD8-3AD1-7F9D-57D6-00F9EBBD3595"/>
 </indexColumnUsage>
 </ind_PK_UK>
 </indexes>

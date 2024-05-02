@@ -1,7 +1,7 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
-<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="14A9BD80-2BFB-DC7C-4828-D69ED38F06DB" containerWithKeyObject="CF9DE793-50C3-E340-EE4E-1972B5BCFB35" localFKIndex="3CDB1224-9DA4-5C45-2B87-CA29E5A6FA0A" name="basket_goodsDB_FK">
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="13A890D9-A26E-9670-008F-B25E9555A0C9" containerWithKeyObject="29DBE5F1-DE4B-1E62-F5BD-22D325C18EBD" localFKIndex="FB420E7C-D90D-3D81-E3CD-5E966C390C1A" name="inquiry_page_goodsDB_FK">
 <createdBy>ITPS</createdBy>
-<createdTime>2024-04-30 05:36:44 UTC</createdTime>
+<createdTime>2024-05-02 01:01:00 UTC</createdTime>
 <ownerDesignName>proect_petshop_001</ownerDesignName>
 <referredTableLongName>goodsDB</referredTableLongName>
 <deleteRule>NO ACTION</deleteRule>

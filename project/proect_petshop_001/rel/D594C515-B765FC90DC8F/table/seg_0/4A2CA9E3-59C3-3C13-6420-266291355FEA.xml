@@ -1,0 +1,119 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="4A2CA9E3-59C3-3C13-6420-266291355FEA" name="review_comment">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:55:52 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<ordsAlias>table_10</ordsAlias>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="comment_id" id="09224BC2-912D-7B82-07F9-88751DD159FA">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:13 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="userDB_userid" id="FB2618A5-6AEE-BEB3-9028-4E9B1362181B">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:46 UTC</createdTime>
+<commentInRDBMS><![CDATA[회원번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="711A3F36-58D9-C958-7E5D-89C57936662B" referredColumn="EE288F90-61BE-8847-12D4-F178B52A01AE"/>
+</associations>
+</Column>
+<Column name="review_review_id" id="B9C93814-79FE-B53B-67F3-8818E682F3AF">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:50 UTC</createdTime>
+<commentInRDBMS><![CDATA[리뷰번호]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="D415D9C3-74F5-D6CD-5571-8F5558A37A78" referredColumn="132859BC-E475-E2E1-7AE1-623228A1F6F0"/>
+</associations>
+</Column>
+<Column name="comment" id="5B687E15-A7A9-5DBA-AE73-2F288DD5A6F7">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:58:01 UTC</createdTime>
+<commentInRDBMS><![CDATA[댓글내용]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT040</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="reg_date" id="097870E8-E09D-55C8-2024-D5269AC8B722">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:58:01 UTC</createdTime>
+<commentInRDBMS><![CDATA[작성일]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="mod_date" id="8947648B-46FF-9DB0-C2E2-F1B3137899FE">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:58:01 UTC</createdTime>
+<commentInRDBMS><![CDATA[수정일]]></commentInRDBMS>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT007</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="88B2B216-402E-E69C-DDCE-86A33719591F" name="review_comment_PK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:13 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="09224BC2-912D-7B82-07F9-88751DD159FA"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="21B1BDAE-39CC-8358-4DBB-CB78822EF79F" name="review_comment_userDB_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:46 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="FB2618A5-6AEE-BEB3-9028-4E9B1362181B"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="9CB8D603-8AA9-C6EA-C6CD-1F8CF3D38E13" name="review_comment_review_FK">
+<createdBy>ITPS</createdBy>
+<createdTime>2024-05-02 00:56:50 UTC</createdTime>
+<ownerDesignName>proect_petshop_001</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="B9C93814-79FE-B53B-67F3-8818E682F3AF"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>
