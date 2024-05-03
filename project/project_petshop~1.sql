@@ -11,8 +11,8 @@ drop table category;
 CREATE TABLE basket (
     basket_id       NUMBER NOT NULL,
     userdb_userid   NUMBER,
-    goodsdb_goodsid NUMBER NOT NULL,
-    goodscnt        NUMBER NOT NULL
+    goodsdb_goodsid NUMBER,
+    goodscnt        NUMBER
 );
 
 COMMENT ON COLUMN basket.basket_id IS
@@ -76,8 +76,8 @@ CREATE TABLE inquiry_page (
     inquiry_id      NUMBER NOT NULL,
     userdb_userid   NUMBER NOT NULL,
     goodsdb_goodsid NUMBER,
-    title           VARCHAR2(20 BYTE) NOT NULL,
-    contents        CLOB NOT NULL,
+    title           VARCHAR2(40 BYTE) NOT NULL,
+    i_contents        CLOB NOT NULL,
     reg_date        DATE NOT NULL,
     mod_date        DATE NOT NULL
 );
@@ -94,7 +94,7 @@ COMMENT ON COLUMN inquiry_page.goodsdb_goodsid IS
 COMMENT ON COLUMN inquiry_page.title IS
     '문의제목';
 
-COMMENT ON COLUMN inquiry_page.contents IS
+COMMENT ON COLUMN inquiry_page.i_contents IS
     '문의내용';
 
 COMMENT ON COLUMN inquiry_page.reg_date IS
@@ -141,7 +141,7 @@ COMMENT ON COLUMN orders.detail_address IS
 COMMENT ON COLUMN orders.phone IS
     '전화번호';
 
-COMMENT ON COLUMN orders.total_pirce IS
+COMMENT ON COLUMN orders.total_price IS
     '총 주문금액';
 
 ALTER TABLE orders ADD CONSTRAINT orders_pk PRIMARY KEY ( orderid );
@@ -152,9 +152,9 @@ CREATE TABLE review (
     userdb_userid   NUMBER NOT NULL,
     goodsdb_goodsid NUMBER NOT NULL,
     title           VARCHAR2(40 BYTE),
-    contents        CLOB,
-    reg_date        DATE NOT NULL,
-    mod_date        DATE NOT NULL
+    r_contents        CLOB,
+    reg_date        DATE,
+    mod_date        DATE
 );
 
 COMMENT ON COLUMN review.review_id IS
@@ -172,7 +172,7 @@ COMMENT ON COLUMN review.goodsdb_goodsid IS
 COMMENT ON COLUMN review.title IS
     '리뷰제목';
 
-COMMENT ON COLUMN review.contents IS
+COMMENT ON COLUMN review.r_contents IS
     '리뷰내용';
 
 COMMENT ON COLUMN review.reg_date IS
@@ -187,7 +187,7 @@ CREATE TABLE review_comment (
     comment_id       NUMBER NOT NULL,
     userdb_userid    NUMBER NOT NULL,
     review_review_id NUMBER NOT NULL,
-    "comment"        CLOB,
+    r_comment        CLOB NOT NULL,
     reg_date         DATE NOT NULL,
     mod_date         DATE NOT NULL
 );
@@ -201,7 +201,7 @@ COMMENT ON COLUMN review_comment.userdb_userid IS
 COMMENT ON COLUMN review_comment.review_review_id IS
     '리뷰번호';
 
-COMMENT ON COLUMN review_comment."comment" IS
+COMMENT ON COLUMN review_comment.r_comment IS
     '댓글내용';
 
 COMMENT ON COLUMN review_comment.reg_date IS
